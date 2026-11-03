@@ -1,25 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="670" viewBox="0 0 1120 670" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="410" viewBox="0 0 960 410" role="img" aria-labelledby="title desc">
   <title id="title">Three nested availability sets in the locally inspected UASpeech package</title>
   <desc id="desc">Audio is available for 28 speakers: 15 dysarthric and 13 controls. Twelve dysarthric speakers have DivX files. Nine of these have at least some legacy word frame indices. M05, M09 and M10 have video but no legacy indices; only M05 and M09 enter our eleven-speaker reconstruction. This is not the current worldwide distribution inventory.</desc>
-  <rect width="1120" height="670" fill="#ffffff"/>
-  <g font-family="Arial, sans-serif" fill="#172b40">
-    <text x="28" y="34" font-size="24" font-weight="700">UASpeech: availability in our inspected source package</text>
-    <text x="28" y="62" font-size="16">Nested sets describe source availability before reconstruction, not completeness or quality.</text>
-    <rect x="25" y="85" width="1070" height="510" rx="18" fill="#edf3fc" stroke="#325d90" stroke-width="2"/>
-    <text x="48" y="120" font-size="23" font-weight="700">A · Audio available — 28 speakers (15 dysarthric + 13 controls)</text>
-    <text x="48" y="154" font-size="18">Audio only in this package: F03, M01, M04</text>
-    <text x="48" y="183" font-size="17">Controls: CF02, CF03, CF04, CF05, CM01, CM04, CM05, CM06,</text>
-    <text x="48" y="209" font-size="17">CM08, CM09, CM10, CM12, CM13</text>
-    <rect x="55" y="235" width="1010" height="335" rx="15" fill="#e6f4f0" stroke="#22735e" stroke-width="2"/>
-    <text x="78" y="272" font-size="23" font-weight="700">B ⊂ A · Audio + long DivX video — 12 dysarthric speakers</text>
-    <text x="78" y="308" font-size="18">Video, no legacy frame index: M05, M09, M10</text>
-    <text x="78" y="337" font-size="16">M05 / M09: reconstructed here. M10: target B2 recording not verified; excluded.</text>
-    <rect x="87" y="364" width="946" height="177" rx="12" fill="#fff6df" stroke="#976a13" stroke-width="2"/>
-    <text x="110" y="401" font-size="22" font-weight="700">C ⊂ B · Audio + video + some legacy indices — 9 speakers</text>
-    <text x="110" y="442" font-size="22">F02, F04, F05, M07, M08, M11, M12, M14, M16</text>
-    <text x="110" y="480" font-size="17">25 index files; 6,286 rows. Several blocks / words are missing.</text>
-    <text x="110" y="510" font-size="17">Legacy index availability does not establish correct audio–video correspondence.</text>
-    <text x="28" y="626" font-size="16">Scope: licensed files inspected on 2026-11-03. The official website separately reports 16 dysarthric speakers.</text>
-    <text x="28" y="651" font-size="16">This diagram neither names withdrawn participants nor claims that absent local files do not exist elsewhere.</text>
+  <rect width="960" height="410" fill="#ffffff"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#21344b">
+    <rect x="16" y="16" width="928" height="378" rx="20" fill="#f1f5fb" stroke="#b7c9df" stroke-width="1.5"/>
+    <text x="46" y="59" font-size="24" font-weight="700">Audio</text>
+    <text x="908" y="61" text-anchor="end" font-size="34" font-weight="700" fill="#42658e">28</text>
+    <text x="46" y="95" font-size="20" fill="#52657b">F03 · M01 · M04 + 13 controls</text>
+
+    <rect x="40" y="122" width="880" height="248" rx="16" fill="#e7f2ef" stroke="#9ebfb4" stroke-width="1.5"/>
+    <text x="70" y="165" font-size="24" font-weight="700">Audio + video</text>
+    <text x="884" y="167" text-anchor="end" font-size="34" font-weight="700" fill="#397563">12</text>
+    <text x="70" y="201" font-size="20" fill="#496b61">M05 · M09 · M10*</text>
+
+    <rect x="64" y="228" width="832" height="118" rx="13" fill="#fff9e9" stroke="#d6c391" stroke-width="1.5"/>
+    <text x="94" y="271" font-size="24" font-weight="700">Audio + video + frame index</text>
+    <text x="860" y="273" text-anchor="end" font-size="34" font-weight="700" fill="#927024">9</text>
+    <text x="94" y="313" font-size="20" fill="#665b3e">F02 · F04 · F05 · M07 · M08 · M11 · M12 · M14 · M16</text>
   </g>
 </svg>

@@ -24,12 +24,18 @@ three availability sets must not be confused:
 
 ![Nested speaker sets: 28 with audio, 12 with video, nine with some legacy indices.](docs/assets/speaker-sets.svg)
 
-The diagram describes **our inspected source package before reconstruction**.
-The nine-speaker inner set has 6,286 original index rows; that is not the
-6,246-record historical experimental subset audited below. Machine-readable
-membership is in [speaker_availability.csv](metadata/speaker_availability.csv).
-The bundled documentation describes the original indices as automatically
-extracted from DTMF and not manually verified; they are not assumed gold labels.
+*Figure: speaker availability in our inspected package before reconstruction.
+Numbers count each complete nested set; IDs appear only in their smallest
+applicable region. The outer set contains 15 dysarthric speakers and 13 controls.
+“Frame index” means at least some legacy indices, not complete or verified coverage.
+M10* has video files but no verified target B2 recording and is excluded from our
+reconstruction; M05 and M09 are added after index recovery.*
+
+The nine-speaker inner set has 25 original index files with 6,286 rows, distinct
+from the 6,246 historical experimental records audited below. The supplied
+indices were automatically extracted from DTMF and not manually verified.
+See [corpus details](docs/CORPUS.md) for the scope and complete speaker lists,
+or [speaker_availability.csv](metadata/speaker_availability.csv) for the inventory.
 
 ### Which audio is speech, and which is the beep?
 
