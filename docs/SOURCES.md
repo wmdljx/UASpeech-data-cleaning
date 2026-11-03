@@ -16,6 +16,7 @@ documents and media are not copied into this repository.
 | E6 | Original-index inventory and final supplemental-index flags; [frame_index.tsv](../metadata/frame_index.tsv), [speaker_availability.csv](../metadata/speaker_availability.csv) | 6,286 original index rows; 2,129 reconstructed missing indices; final 8,415 records. |
 | E7 | Decoder/header checks of all 37 source DivX files; speech-channel checks and stored 33-source mappings | Stereo 44.1-kHz streams, nominal 30000/1001 fps, explicit speech-channel selection and clock mapping. Tone dominance is not asserted universally. |
 | E8 | Tests and isolated reconstruction runs described in [VERIFICATION.md](VERIFICATION.md) | What this portable implementation has actually been tested to reproduce. |
+| E9 | Licensed package `UASpeech_original_FM/UASpeech/doc/speaker_wordlist.xls`, `Speaker` sheet, `Speech Intelligibility (%)` column; read directly on 2026-11-03 | Intelligibility scores and supplied groups for the 15 locally available dysarthric speakers; “Mid” normalized to “Medium”. The sheet also lists speakers outside our local data inventory and is not used as proof of media availability. |
 
 ## Distinguishing findings from release mechanics
 

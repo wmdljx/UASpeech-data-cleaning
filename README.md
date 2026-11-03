@@ -37,6 +37,42 @@ indices were automatically extracted from DTMF and not manually verified.
 See [corpus details](docs/CORPUS.md) for the scope and complete speaker lists,
 or [speaker_availability.csv](metadata/speaker_availability.csv) for the inventory.
 
+### Speaker coverage, major issues and repairs
+
+This table covers **all 15 non-control speakers in the inspected package**.
+Severity is represented by the supplied speech-intelligibility groups (Very Low,
+Low, Medium, High); lower intelligibility indicates greater speech impairment,
+not more severe data errors. Coverage describes the three blocks **before repair**.
+A complete index means 765 entries, not necessarily correct associations.
+
+| Speaker | Severity (intelligibility group and score) | Audio available? | Complete video + complete frame index before repair? | Our treatment |
+|---|---|---|---|---|
+| F02 | Low, 29% | Yes | No: complete video; all 255 B3 indices and one B2 index missing | Recover 256 indices by waveform matching. Also correct predominantly one-position video shifts in B2; 256/509 historical records affected (50.29%). |
+| F03 | Very Low, 6% | Yes | No: no local long video or video index | Not included in AV reconstruction. |
+| F04 | Medium, 62% | Yes | No: complete video; one B3 index missing | Recover one index and correct predominantly one-position video shifts in B3; 182/764 historical records affected (23.82%). |
+| F05 | High, 95% | Yes | Yes: complete video and 765 original indices | Review extraneous/non-target content and local intervals; trim audio or adjust video boundaries as approved. |
+| M01 | Very Low, 15% | Yes | No: no local long video or video index | Not included in AV reconstruction. |
+| M04 | Very Low, 2% | Yes | No: no local long video or video index | Not included in AV reconstruction. |
+| M05 | Medium, 58% | Yes | No: complete three-block videos, but no original word indices | Reconstruct 765 indices using waveform matching and manual frame-level checks; include the speaker. |
+| M07 | Low, 28% | Yes | Yes: complete video and 765 original indices, but cross-block mismatches | Reassign video sources for 765/765 records, predominantly B1 audio → B3 video, B2 → B1, B3 → B2; retain item-specific exceptions. |
+| M08 | High, 93% | Yes | Yes: complete video and 765 original indices | Review isolated audio-content and interval anomalies; apply approved source/boundary repairs. |
+| M09 | High, 86% | Yes | No: complete three-block videos, but no original word indices | Reconstruct 765 indices using waveform matching and manual frame-level checks; include the speaker. |
+| M10 | High, 93% | Yes | No: no original word indices; actual B2 video unverified, with the file labeled B2 containing a truncated B3 duplicate | Exclude from the final reconstruction; matching cannot recover target footage absent from the available files. |
+| M11 | Medium, 62% | Yes | No: complete video; B3 has 171/255 indices, missing 84 | Recover 84 indices; use waveform matching and review feedback to correct supplemental boundaries, overlaps and ordering. |
+| M12 | Very Low, 7.4% | Yes | No: complete video; all 255 B3 indices and three B2 indices missing | Recover 258 indices and repair isolated audio-content or interval issues. |
+| M14 | High, 90.4% | Yes | Yes: complete video and 765 original indices | Correct local boundary shifts and incomplete utterance coverage; adjust paired audio where approved. |
+| M16 | Low, 43% | Yes | Yes: complete video and 765 original indices | Correct local boundary/coverage issues; retain all full-frame intervals. One historical mouth-localization failure does not imply missing source video. |
+
+Intelligibility values come from the bundled `speaker_wordlist.xls`, `Speaker`
+sheet ([E9](docs/SOURCES.md)). Recovery adds 2,129 previously missing indices,
+yielding 765 records for each of 11 speakers. **Missing-index recovery and error
+correction are different counts**: F02's two counts of 256 must not be added.
+Original indices also differ from historical experimental records: M12 had 507
+original indices but 499 historical records. All absence statements are local to
+the inspected package, not claims about every corpus copy.
+[Original index counts](docs/CORPUS.md#words-and-supplied-indices) ·
+[Historical error counts](docs/FINDINGS.md)
+
 ### Which audio is speech, and which is the beep?
 
 The recording setup used an eight-microphone array and an eight-channel audio
@@ -66,13 +102,6 @@ timeline; a high match score alone is not treated as proof of lexical correctnes
 | The word audio and long video exist, but the word has no frame index | Recover the interval using the same waveform-guided procedure and add the missing index. |
 | A small number of word recordings contain extraneous material or the wrong utterance | Manually inspect long recordings and trim confirmed non-target material. If the correct utterance is present in the video but not reliably available in the word recording, extract it from the embedded speech track. |
 
-For F02 B2 and F04 B3, a prominent error was a one-position shift between the word
-sequence and video intervals. Their **total** affected counts were 256/509 (50.29%)
-and 182/764 (23.82%), respectively; 431 of these records belong specifically to
-the cascade-shift category. For M07, all 765 records required video-source
-reassignment, predominantly **B1 audio → B3 video, B2 audio → B1 video, B3 audio →
-B2 video**. Exceptions remain item-specific in the index, not a hard-coded block rule.
-
 Other exceptions included prompts/conversation, non-target attempts, incomplete
 word coverage and local boundary conflicts. These were addressed through the
 recorded manual review and source checks; genuine dysarthric speech characteristics
@@ -84,10 +113,6 @@ were not automatically classified as errors. [Details and per-speaker counts](do
 | Previously missing word indices reconstructed | 2,129 |
 | Added speakers with full block indices | M05 and M09: 765 each |
 | Approved word intervals in this cutting package | 8,415 across 11 speakers |
-
-F02 and M12 also regain B3 and other missing items, increasing their historical
-record counts from 509 and 499 to 765 each. M10 is not included because the actual
-B2 recording could not be verified in the available source files.
 
 **Cutting scope versus previous experiments.** This package provides cutting
 instructions for all 8,415 approved source-video intervals. The previous mouth-ROI experimental release had

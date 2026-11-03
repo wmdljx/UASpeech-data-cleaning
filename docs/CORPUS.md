@@ -33,6 +33,9 @@ target B2 recording, so M10 is not in our eleven-speaker reconstruction.
 
 ## Words and supplied indices
 
+For a consolidated account of each speaker's coverage gap and reconstruction
+outcome, see [speaker coverage, major issues and repairs](../README.md#speaker-coverage-major-issues-and-repairs).
+
 The full recording protocol has three blocks of 255 utterances. Each contains
 10 digits, 26 radio-alphabet words, 19 commands, 100 common words and 100
 block-specific uncommon words. The first 155 items repeat across blocks; the
