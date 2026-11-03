@@ -49,20 +49,21 @@ the three blocks **before repair**. “Yes” means complete coverage, not corre
 | F02 | Low | Yes | No: incomplete index | Missing B3 indices + one B2 index; sequential shift in B2 | Recover indices; realign video. |
 | F03 | Very Low | Yes | No: no video or index | No local source video | Exclude from AV reconstruction. |
 | F04 | Medium | Yes | No: incomplete index | One missing B3 index; sequential shift in B3 | Recover index; realign video. |
-| F05 | High | Yes | Yes | Extraneous audio; local boundary errors | Trim audio; correct boundaries. |
+| F05 | High | Yes | Yes | Isolated issues in 19 samples | Review and repair individually. |
 | M01 | Very Low | Yes | No: no video or index | No local source video | Exclude from AV reconstruction. |
 | M04 | Very Low | Yes | No: no video or index | No local source video | Exclude from AV reconstruction. |
 | M05 | Medium | Yes | No: no index | Missing indices for all three blocks | Reconstruct indices; include speaker. |
 | M07 | Low | Yes | Yes | Cross-block audio–video mismatches | Reassign video sources. |
-| M08 | High | Yes | Yes | Isolated audio-content and boundary errors | Correct audio and boundaries. |
+| M08 | High | Yes | Yes | Isolated issues in 3 samples | Review and repair individually. |
 | M09 | High | Yes | No: no index | Missing indices for all three blocks | Reconstruct indices; include speaker. |
 | M10 | High | Yes | No: incomplete video; no index | Actual B2 video unverified; B2-labeled file duplicates B3 | Exclude from AV reconstruction. |
 | M11 | Medium | Yes | No: incomplete index | 84 missing B3 indices; supplemental overlaps/order errors | Recover indices; correct intervals. |
-| M12 | Very Low | Yes | No: incomplete index | Missing B3 indices + three B2 indices; isolated audio errors | Recover indices; correct audio. |
-| M14 | High | Yes | Yes | Boundary shifts; incomplete utterance coverage | Correct boundaries and paired audio. |
-| M16 | Low | Yes | Yes | Local boundary and utterance-coverage errors | Correct boundaries and paired audio. |
+| M12 | Very Low | Yes | No: incomplete index | Missing B3 indices + three B2 indices; 1 sample with an isolated issue | Recover indices; repair the affected sample. |
+| M14 | High | Yes | Yes | Isolated issues in 13 samples | Review and repair individually. |
+| M16 | Low | Yes | Yes | Isolated issues in 6 samples | Review and repair individually. |
 
-All absence statements are local to the inspected package, not claims about every
+Isolated-issue counts refer to the historical nine-speaker audit, not outstanding
+errors or a new census of the expanded dataset. All absence statements are local to the inspected package, not claims about every
 corpus copy. Detailed counts and repair procedures are given below and in the
 linked inventories.
 [Original index counts](docs/CORPUS.md#words-and-supplied-indices) ·
