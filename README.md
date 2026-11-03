@@ -40,36 +40,31 @@ or [speaker_availability.csv](metadata/speaker_availability.csv) for the invento
 ### Speaker coverage, major issues and repairs
 
 This table covers **all 15 non-control speakers in the inspected package**.
-Severity is represented by the supplied speech-intelligibility groups (Very Low,
-Low, Medium, High); lower intelligibility indicates greater speech impairment,
-not more severe data errors. Coverage describes the three blocks **before repair**.
-A complete index means 765 entries, not necessarily correct associations.
+Intelligibility groups follow the supplied speaker metadata ([E9](docs/SOURCES.md));
+lower intelligibility indicates greater speech impairment. Availability describes
+the three blocks **before repair**. “Yes” means complete coverage, not correct alignment.
 
-| Speaker | Severity (intelligibility group and score) | Audio available? | Complete video + complete frame index before repair? | Our treatment |
-|---|---|---|---|---|
-| F02 | Low, 29% | Yes | No: complete video; all 255 B3 indices and one B2 index missing | Recover 256 indices by waveform matching. Also correct predominantly one-position video shifts in B2; 256/509 historical records affected (50.29%). |
-| F03 | Very Low, 6% | Yes | No: no local long video or video index | Not included in AV reconstruction. |
-| F04 | Medium, 62% | Yes | No: complete video; one B3 index missing | Recover one index and correct predominantly one-position video shifts in B3; 182/764 historical records affected (23.82%). |
-| F05 | High, 95% | Yes | Yes: complete video and 765 original indices | Review extraneous/non-target content and local intervals; trim audio or adjust video boundaries as approved. |
-| M01 | Very Low, 15% | Yes | No: no local long video or video index | Not included in AV reconstruction. |
-| M04 | Very Low, 2% | Yes | No: no local long video or video index | Not included in AV reconstruction. |
-| M05 | Medium, 58% | Yes | No: complete three-block videos, but no original word indices | Reconstruct 765 indices using waveform matching and manual frame-level checks; include the speaker. |
-| M07 | Low, 28% | Yes | Yes: complete video and 765 original indices, but cross-block mismatches | Reassign video sources for 765/765 records, predominantly B1 audio → B3 video, B2 → B1, B3 → B2; retain item-specific exceptions. |
-| M08 | High, 93% | Yes | Yes: complete video and 765 original indices | Review isolated audio-content and interval anomalies; apply approved source/boundary repairs. |
-| M09 | High, 86% | Yes | No: complete three-block videos, but no original word indices | Reconstruct 765 indices using waveform matching and manual frame-level checks; include the speaker. |
-| M10 | High, 93% | Yes | No: no original word indices; actual B2 video unverified, with the file labeled B2 containing a truncated B3 duplicate | Exclude from the final reconstruction; matching cannot recover target footage absent from the available files. |
-| M11 | Medium, 62% | Yes | No: complete video; B3 has 171/255 indices, missing 84 | Recover 84 indices; use waveform matching and review feedback to correct supplemental boundaries, overlaps and ordering. |
-| M12 | Very Low, 7.4% | Yes | No: complete video; all 255 B3 indices and three B2 indices missing | Recover 258 indices and repair isolated audio-content or interval issues. |
-| M14 | High, 90.4% | Yes | Yes: complete video and 765 original indices | Correct local boundary shifts and incomplete utterance coverage; adjust paired audio where approved. |
-| M16 | Low, 43% | Yes | Yes: complete video and 765 original indices | Correct local boundary/coverage issues; retain all full-frame intervals. One historical mouth-localization failure does not imply missing source video. |
+| Speaker | Intelligibility group | Audio | Complete video + index | Main issues | Our treatment |
+|---|---|---|---|---|---|
+| F02 | Low | Yes | No: incomplete index | Missing B3 indices + one B2 index; sequential shift in B2 | Recover indices; realign video. |
+| F03 | Very Low | Yes | No: no video or index | No local source video | Exclude from AV reconstruction. |
+| F04 | Medium | Yes | No: incomplete index | One missing B3 index; sequential shift in B3 | Recover index; realign video. |
+| F05 | High | Yes | Yes | Extraneous audio; local boundary errors | Trim audio; correct boundaries. |
+| M01 | Very Low | Yes | No: no video or index | No local source video | Exclude from AV reconstruction. |
+| M04 | Very Low | Yes | No: no video or index | No local source video | Exclude from AV reconstruction. |
+| M05 | Medium | Yes | No: no index | Missing indices for all three blocks | Reconstruct indices; include speaker. |
+| M07 | Low | Yes | Yes | Cross-block audio–video mismatches | Reassign video sources. |
+| M08 | High | Yes | Yes | Isolated audio-content and boundary errors | Correct audio and boundaries. |
+| M09 | High | Yes | No: no index | Missing indices for all three blocks | Reconstruct indices; include speaker. |
+| M10 | High | Yes | No: incomplete video; no index | Actual B2 video unverified; B2-labeled file duplicates B3 | Exclude from AV reconstruction. |
+| M11 | Medium | Yes | No: incomplete index | 84 missing B3 indices; supplemental overlaps/order errors | Recover indices; correct intervals. |
+| M12 | Very Low | Yes | No: incomplete index | Missing B3 indices + three B2 indices; isolated audio errors | Recover indices; correct audio. |
+| M14 | High | Yes | Yes | Boundary shifts; incomplete utterance coverage | Correct boundaries and paired audio. |
+| M16 | Low | Yes | Yes | Local boundary and utterance-coverage errors | Correct boundaries and paired audio. |
 
-Intelligibility values come from the bundled `speaker_wordlist.xls`, `Speaker`
-sheet ([E9](docs/SOURCES.md)). Recovery adds 2,129 previously missing indices,
-yielding 765 records for each of 11 speakers. **Missing-index recovery and error
-correction are different counts**: F02's two counts of 256 must not be added.
-Original indices also differ from historical experimental records: M12 had 507
-original indices but 499 historical records. All absence statements are local to
-the inspected package, not claims about every corpus copy.
+All absence statements are local to the inspected package, not claims about every
+corpus copy. Detailed counts and repair procedures are given below and in the
+linked inventories.
 [Original index counts](docs/CORPUS.md#words-and-supplied-indices) ·
 [Historical error counts](docs/FINDINGS.md)
 
@@ -101,6 +96,21 @@ timeline; a high match score alone is not treated as proof of lexical correctnes
 | The word audio is correct, but the assigned video interval or source is wrong | Match the word waveform to the embedded speech, check source/block and neighboring words, correct the frame interval, then cut the source video again. |
 | The word audio and long video exist, but the word has no frame index | Recover the interval using the same waveform-guided procedure and add the missing index. |
 | A small number of word recordings contain extraneous material or the wrong utterance | Manually inspect long recordings and trim confirmed non-target material. If the correct utterance is present in the video but not reliably available in the word recording, extract it from the embedded speech track. |
+
+F02 and F04 predominantly exhibited one-position shifts between the word sequence
+and video intervals, particularly in B2 and B3, respectively. Their total historical
+affected counts were 256/509 (50.29%) and 182/764 (23.82%); 431 records belonged
+specifically to the sequential-shift category. M07 required source reassignment for
+all 765 records, predominantly B1 audio → B3 video, B2 → B1, and B3 → B2.
+Item-specific exceptions are retained in the released index.
+
+Missing-index recovery added 256 indices for F02, one for F04, 84 for M11, 258 for
+M12, and 765 each for M05 and M09: 2,129 in total. The resulting coverage is 765
+records for each of 11 speakers. Missing-index recovery and historical error
+correction are different counts and must not be added. Original indices also
+differ from historical experimental records: M12 had 507 original indices but
+499 historical records. M10 was excluded because the B2-labeled file contains a
+truncated B3 duplicate and the actual B2 recording was not verified in the available files.
 
 Other exceptions included prompts/conversation, non-target attempts, incomplete
 word coverage and local boundary conflicts. These were addressed through the
