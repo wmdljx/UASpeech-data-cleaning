@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>UASpeech Audio–Video Alignment Repair · Interactive Project</title>
+  <meta name="description" content="Explore UASpeech audio–video alignment repairs, restored frame indices for 11 speakers, a real waveform example, and reproducible word-level reconstruction tools.">
+  <meta name="theme-color" content="#163c35">
+  <link rel="canonical" href="https://wmdljx.github.io/UASpeech-data-cleaning/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="UASpeech · The right word. The right frames.">
+  <meta property="og:description" content="An interactive guide to waveform-guided alignment repair and 8,415 reconstructed word intervals.">
+  <meta property="og:url" content="https://wmdljx.github.io/UASpeech-data-cleaning/">
+  <meta property="og:image" content="https://wmdljx.github.io/UASpeech-data-cleaning/assets/alignment-case-lawyer.png">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="brand" href="#" aria-label="UASpeech alignment repair home"><span class="brand-mark" aria-hidden="true">∿</span> UASpeech <span class="brand-sub">/ alignment repair</span></a>
+  <nav aria-label="Main navigation"><a href="#coverage">Dataset</a><a href="#cases">Cases</a><a href="#method">Method</a><a href="#use">Use it</a><a class="repo-link" href="https://github.com/wmdljx/UASpeech-data-cleaning">GitHub ↗</a></nav>
+</header>
+<main id="main">
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero-copy"><p class="eyebrow"><span class="dot"></span> An independent UASpeech reconstruction</p>
+      <h1 id="hero-title">The right word.<br><span>The right frames.</span></h1>
+      <p class="lead">Repair audio–video mismatches. Recover missing word boundaries. Rebuild the clips from the original recordings.</p>
+      <p class="hero-note">A waveform-guided workflow, checked frame by frame with a custom review tool.</p>
+      <div class="hero-actions"><a class="button primary" href="#cases">Explore a repair <span aria-hidden="true">↓</span></a><a class="text-link" href="#use">Reconstruct the data ↗</a></div>
+    </div>
+    <figure class="hero-figure"><div class="figure-top"><span class="eyebrow">One word. Two video intervals.</span><span class="mono">F04 / B3 / UW14</span></div>
+      <div class="hero-word">“lawyer”<span>Word-level recording unchanged</span></div>
+      <div class="mini-row"><span><i class="key blue"></i>Word recording</span><canvas class="wave" data-panel="word" width="960" height="130" role="img" aria-label="Reference waveform for lawyer"></canvas></div>
+      <div class="mini-row"><span><i class="key orange"></i>Original video interval <em>Wrong word</em></span><canvas class="wave" data-panel="original" width="960" height="130" role="img" aria-label="Original camera interval contains a different speech pattern"></canvas></div>
+      <div class="mini-row"><span><i class="key teal"></i>Corrected video interval <em class="good">Matched</em></span><canvas class="wave" data-panel="corrected" width="960" height="130" role="img" aria-label="Corrected camera interval corresponds to lawyer"></canvas></div>
+      <figcaption>Real recorded waveforms · shared time scale · <a href="assets/alignment-case-lawyer.png">full figure ↗</a></figcaption>
+    </figure>
+  </section>
+  <div class="stats wrap" aria-label="Reconstruction summary">
+    <div><strong>9 → 11</strong><span>speakers in the reconstructed set</span></div>
+    <div><strong>8,415</strong><span>word intervals ready to reconstruct</span></div>
+    <div><strong>2,129</strong><span>previously missing indices recovered</span></div>
+    <div><strong>19.95<span class="percent">%</span></strong><span>affected in the historical nine-speaker audit</span></div>
+  </div>
+  <p class="stats-note wrap">The audit covers 1,246 of 6,246 historical records. Missing indices are counted separately. These are not current residual error rates.</p>
+
+  <section id="coverage" class="section wrap" aria-labelledby="coverage-title">
+    <div class="section-heading"><div><p class="eyebrow">01 / Understand the data</p><h2 id="coverage-title">What was available?<br>What did we recover?</h2></div><p>UASpeech contains isolated-word recordings. Three blocks of 255 utterances give 765 recordings per complete speaker.</p></div>
+    <div class="coverage-layout">
+      <div class="speaker-explorer">
+        <div class="scope-controls" role="group" aria-label="Original data coverage"><button data-scope="audio" aria-pressed="true">Audio <strong>28</strong></button><button data-scope="video" aria-pressed="false">With video <strong>12</strong></button><button data-scope="indexed" aria-pressed="false">With some indices <strong>9</strong></button></div>
+        <p class="small muted">Before reconstruction, in the original files examined. Explore the 15 dysarthric speakers below; the other 13 are audio-only controls.</p>
+        <div id="speaker-groups" aria-label="Speakers grouped by perceptual intelligibility"></div>
+        <p class="legend"><span><i class="sample-dot indexed"></i>Some original indices</span><span><i class="sample-dot video"></i>Video, no index</span><span><i class="sample-dot audio"></i>Audio only</span></p>
+        <details class="plain-details"><summary>View the original nested-set figure</summary><img src="assets/speaker-sets.svg" alt="Before reconstruction: audio for 28 speakers, video files for 12, some frame indices for nine" loading="lazy"><p class="small muted">M10 has partial video but lacks the actual B2 recording. “Video available” does not imply complete recordings.</p></details>
+      </div>
+      <article class="speaker-detail" id="speaker-detail" aria-live="polite" aria-atomic="true">
+        <div class="detail-top"><span class="eyebrow">Selected speaker</span><span id="speaker-tag" class="pill">Low intelligibility</span></div>
+        <h3 id="speaker-id">F02</h3>
+        <div class="before-after"><div><span>Original indices</span><strong id="original-count">509</strong></div><span aria-hidden="true">→</span><div><span>Reconstructed</span><strong id="final-count">765</strong></div></div>
+        <h4>Original problem</h4><p id="speaker-issue">B2 video assignments shifted one word later. All B3 indices and one B2 index were missing.</p>
+        <h4>Our treatment</h4><p id="speaker-repair">Recovered missing indices and realigned word intervals.</p>
+        <div class="audit-note"><span>Historical affected / audited</span><strong id="speaker-rate">256 / 509 · 50.29%</strong><small>Existing nine-speaker audit only; missing indices and later supplemental reviews are separate.</small></div>
+        <a id="speaker-use" class="text-link" href="#use">Build this speaker’s clips ↗</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="cases" class="case-section"><div class="wrap section">
+    <div class="section-heading"><div><p class="eyebrow">02 / Inspect the difference</p><h2 id="cases-title">Same label.<br>Not always the same recording.</h2></div><p>Two distinct problems: a shifted word interval and a mismatch between recording blocks.</p></div>
+    <div class="case-tabs" role="tablist" aria-label="Repair cases"><button id="tab-boundary" role="tab" aria-selected="true" aria-controls="boundary-case">01 · A shifted word</button><button id="tab-block" role="tab" aria-selected="false" aria-controls="block-case" tabindex="-1">02 · A mismatched block</button></div>
+    <div id="boundary-case" role="tabpanel" aria-labelledby="tab-boundary" class="case-content">
+      <div class="case-controls"><div><span class="mono muted">F04_B3_UW14</span><h3>Finding “lawyer” again.</h3></div><div class="segmented" role="group" aria-label="Camera interval"><button id="before-button" aria-pressed="true">Before repair</button><button id="after-button" aria-pressed="false">After repair</button></div></div>
+      <div class="wave-layout"><div class="wave-board">
+        <div class="track-label"><span><i class="key blue"></i>Word-level microphone recording</span><span>2.262 s · unchanged</span></div><canvas id="word-wave" class="wave interactive-wave" data-panel="word" width="1440" height="190" role="img" aria-label="Lawyer reference waveform; shared time range zero to 5.172 seconds"></canvas>
+        <div class="track-label"><span id="camera-label"><i class="key orange"></i>Camera speech — original index</span><span id="camera-duration">5.172 s</span></div><canvas id="camera-wave" class="wave interactive-wave" data-panel="original" width="1440" height="190" role="img" aria-label="Camera speech from the original frame interval"></canvas>
+        <div class="time-axis" aria-hidden="true"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5 s</span></div>
+        <label class="cursor-label" for="time-cursor">Compare at <output id="time-value" for="time-cursor">1.00 s</output><span>since each clip begins</span></label><input id="time-cursor" type="range" min="0" max="5.172" value="1" step="0.01">
+        <p class="small muted">Recorded-waveform image excerpts, not audio playback. Each track is peak-normalized and begins at its own clip boundary; no fitted time shift or denoising. Blank space after a short track is not added audio.</p>
+      </div><aside class="interval-story" aria-live="polite"><span id="interval-status" class="status-label">Original interval</span><p class="frame-number" id="case-frames">[18354, 18509)</p><h4 id="case-verdict">The next word, not this word.</h4><p id="case-explanation">The old interval falls at the neighboring “Missouri” recording. Its longer, different speech pattern does not match the reference.</p><div class="neighbor-line"><span>Reference word</span><strong>lawyer</strong></div><div class="neighbor-line"><span>Original interval near</span><strong>Missouri</strong></div><a class="text-link" href="https://github.com/wmdljx/UASpeech-data-cleaning/blob/main/docs/METHODS.md#homepage-example-f04_b3_uw14-lawyer">Check the source evidence ↗</a></aside></div>
+    </div>
+    <div id="block-case" role="tabpanel" aria-labelledby="tab-block" class="case-content" hidden>
+      <div class="case-controls"><div><span class="mono muted">M07 / recording-block association</span><h3>Follow the audio to its actual video.</h3></div></div>
+      <p>All 765 historical M07 records required source reassignment. Select an audio block to see its corrected video sources, including exceptions.</p>
+      <div class="block-selector" role="group" aria-label="M07 audio block"><button data-block="B1" aria-pressed="true">B1 audio</button><button data-block="B2" aria-pressed="false">B2 audio</button><button data-block="B3" aria-pressed="false">B3 audio</button></div>
+      <div class="mapping-layout"><div class="audio-block"><span class="eyebrow">Word-audio labels</span><strong id="block-label">M07 · B1</strong><span>255 utterances</span></div><span class="map-arrow" aria-hidden="true">→</span><div id="mapping-results" aria-live="polite"></div></div>
+      <p class="small muted">Counts are read from the published final frame index. This identifies the actual source associations; it does not establish who introduced the original naming or processing error.</p>
+    </div>
+    <noscript><p>The repair case can also be inspected in this complete figure:</p><img src="assets/alignment-case-lawyer.png" alt="Three actual waveforms comparing the word recording with original and corrected camera intervals"></noscript>
+  </div></section>
+
+  <section id="method" class="section wrap" aria-labelledby="method-title">
+    <div class="section-heading"><div><p class="eyebrow">03 / Follow the method</p><h2 id="method-title">Listen to the video.<br>Then find the frames.</h2></div><p>Long videos carry a speech channel tied to their picture timeline. We compare it with the word recording to locate the matching utterance.</p></div>
+    <div class="route-choice" role="group" aria-label="Choose an alignment scenario"><span>Try a path</span><button data-route="valid" aria-pressed="false">Existing index matches</button><button data-route="mismatch" aria-pressed="true">Existing index is wrong</button><button data-route="missing" aria-pressed="false">No index exists</button></div>
+    <div id="method-steps" class="method-steps" role="group" aria-label="Workflow stages"></div>
+    <div class="method-detail" aria-live="polite"><div><span class="eyebrow" id="step-number">Step 01</span><h3 id="step-title">Check the existing interval</h3></div><div><p id="step-description">Use its source frames to extract camera speech, then compare it with the word-level recording.</p><p id="step-note" class="small muted">Matching candidates are not automatic approvals.</p></div></div>
+    <p class="method-footnote">Unusually long or incorrect word audio is reviewed separately: remove confirmed non-target content, or use the matched camera speech when necessary. The waveform score alone never approves a sample.</p>
+    <details class="plain-details"><summary>See the full workflow and matching principle</summary><img src="assets/cleaning-pipeline.svg" alt="Existing frames lead to waveform comparison, valid intervals to cutting, and mismatches or missing indices to search and review" loading="lazy"><p>Normalized cross-correlation compares centered waveform shapes across candidate positions. Word order, neighboring intervals and manual frame-level review support the final choice. Thresholds depend on the review stage; there is no universal pass score.</p><a href="https://github.com/wmdljx/UASpeech-data-cleaning/blob/main/docs/METHODS.md">Read the method and sources ↗</a></details>
+  </section>
+
+  <section id="use" class="use-section"><div class="section wrap">
+    <div class="section-heading"><div><p class="eyebrow">04 / Reconstruct it yourself</p><h2 id="use-title">Your authorized files.<br>Our corrected indices.</h2></div><p>The website explains the repairs. The command runs on your computer. No recordings are uploaded here.</p></div>
+    <div class="builder-layout"><form id="command-form" class="builder-form">
+      <fieldset><legend>What would you like to build?</legend><div class="scope-radios"><label><input type="radio" name="build-scope" value="sample" checked> One sample</label><label><input type="radio" name="build-scope" value="speaker"> One speaker</label><label><input type="radio" name="build-scope" value="all"> All records</label></div></fieldset>
+      <div id="sample-field"><label for="sample-id">Sample ID</label><input id="sample-id" list="sample-options" value="F04_B3_UW14" autocomplete="off" spellcheck="false" aria-describedby="sample-description"><datalist id="sample-options"></datalist><p id="sample-description" class="small">lawyer · F04_B3 · [18282, 18350)</p></div>
+      <div id="speaker-field" hidden><label for="build-speaker">Speaker</label><select id="build-speaker"></select></div>
+      <label for="raw-root">Original UASpeech folder</label><input id="raw-root" value="/path/to/uaspeech_ORIGIN" spellcheck="false" autocomplete="off">
+      <div class="form-row"><div><label for="output-root">Output folder</label><input id="output-root" value="./outputs" spellcheck="false" autocomplete="off"></div><div><label for="workers">Source workers</label><select id="workers"><option value="1">1 · default</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div></div>
+      <p id="command-error" class="error-message" role="alert"></p>
+    </form><div class="command-box"><div class="terminal-head"><span><i></i><i></i><i></i></span><span>Terminal · Linux / Bash</span><button id="copy-command" type="button">Copy command</button></div><pre><code id="build-command">python -m uaspeech_cut build --raw-root /path/to/uaspeech_ORIGIN --output ./outputs --id F04_B3_UW14</code></pre><p id="copy-status" class="small" role="status"></p><div class="command-explainer"><span class="mono">01</span><p>Check source files and existing outputs.</p><span class="mono">02</span><p>Build paired word audio and full-frame video.</p><span class="mono">03</span><p>Rerun to verify and skip completed samples.</p></div><p class="small terminal-note">The MP4 contains camera speech. The separate word WAV is the paired audio.</p></div></div>
+    <details class="install-details"><summary>First time? Install the tool</summary><pre><code>git clone https://github.com/wmdljx/UASpeech-data-cleaning.git
+cd UASpeech-data-cleaning
+python3.10 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-tested.txt
+python -m pip install -e .
+ffmpeg -version
+ffprobe -version
+python -m uaspeech_cut validate</code></pre><p>Install FFmpeg/ffprobe separately. Python 3.10 on Linux is the tested setup. Obtain UASpeech through its official access process; this site does not distribute corpus audio or video.</p></details>
+    <div class="use-links"><a href="https://github.com/wmdljx/UASpeech-data-cleaning/blob/main/docs/USAGE.md">Setup & troubleshooting ↗</a><a href="https://github.com/wmdljx/UASpeech-data-cleaning/tree/main/metadata">Indices & manifests ↗</a><a href="https://speechtechnology.web.illinois.edu/uaspeech/">Official UASpeech access ↗</a></div>
+  </div></section>
+</main>
+<footer class="wrap"><div><a class="brand" href="#">UASpeech <span class="brand-sub">/ alignment repair</span></a><p>An independent reconstruction project. UASpeech is provided by the University of Illinois.</p><p>Reference: Kim et al., <a href="https://www.isca-archive.org/interspeech_2008/kim08c_interspeech.html">Dysarthric Speech Database for Universal Access Research</a>, Interspeech 2008.</p></div><div class="footer-meta"><a href="https://github.com/wmdljx/UASpeech-data-cleaning">Code & data indices ↗</a><span id="data-version">Metadata snapshot: 80d6e0c</span><span>No file upload · No analytics added</span></div></footer>
+<noscript><p class="wrap">JavaScript enables the filters and command builder. The project description, figures and repository links remain available without it.</p></noscript>
+</body>
+</html>
