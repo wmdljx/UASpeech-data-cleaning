@@ -4,6 +4,7 @@ Corrected frame indices and code to reconstruct word-level audio and full-frame
 video clips from your licensed UASpeech files. **11 speakers · 8,415 indexed
 utterances.** No corpus audio or video is distributed.
 
+[Interactive project page](https://wmdljx.github.io/UASpeech-data-cleaning/) ·
 [Quick start](#quick-start) · [Cleaning workflow](#cleaning-workflow) ·
 [Worked example](#worked-example) · [Usage guide](docs/USAGE.md)
 
@@ -145,7 +146,7 @@ screenshot and source are not part of this quick guide.
 [File formats](docs/DATA_FORMAT.md) · [Methods and sources](docs/METHODS.md) ·
 [Archived full version](https://github.com/wmdljx/UASpeech-data-cleaning/tree/archive/detailed-2026-11-13)
 
-Run `python -m unittest discover -s tests -v` for tests. The repository remains a
-private draft pending code-license and publication approval; see [rights](LICENSE.md).
+Run `python -m unittest discover -s tests -v` for tests.
+See [rights and source-data restrictions](LICENSE.md).
 Cite Kim et al., *Dysarthric Speech Database for Universal Access Research*,
 Interspeech 2008. This is an independent reconstruction.
