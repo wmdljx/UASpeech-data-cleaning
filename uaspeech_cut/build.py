@@ -63,7 +63,7 @@ def preflight(rows, actions, manifests, sources, raw_root, output, file_hash):
         audio = [s for s in streams if s['codec_type'] == 'audio']
         if not any(s['codec_type'] == 'video' for s in streams) or not audio or int(audio[0]['channels']) <= int(source['channel']):
             errors.append(f"Video or selected speech channel unavailable: {source['path']}")
-    for row in rows:
+    for row in rows if Path(output).exists() else []:
         uid = row['utterance_id']
         try:
             action = actions[uid]
