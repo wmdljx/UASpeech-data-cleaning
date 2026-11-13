@@ -14,8 +14,11 @@ semantically correct. Restricted test outputs remain outside the tracked files.
   checked. Original-index SHA-256/line, source-video SHA-256, unchanged word-audio
   PCM hash and corrected-frame metadata are checked by the script. It displays
   the actual recorded waveforms, not synthetic replacements.
-- One real static waveform figure is included after owner confirmation of GitHub
-  display authorization on 2026-11-13. Its decoded cache stays local. No original
+- The quieter replacement `F04_B3_UW14` was verified against original index line
+  173 and the approved lawyer/Missouri intervals. The old Zero example remains
+  reproducible through `alignment_case_zero.json`. Neither plot is denoised.
+- Static waveform figures are included after owner confirmation of GitHub
+  display authorization on 2026-11-13 and the replacement request. Decoded caches stay local. No original
   audio/video, sample arrays or review database is added to the repository.
 - Metadata validation still covers 8,415 records across 11 speakers. This update
   changes presentation and adds a plotting example; it is not a new dataset audit.

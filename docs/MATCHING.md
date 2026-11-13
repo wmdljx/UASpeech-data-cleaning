@@ -4,6 +4,24 @@ The reference is the speech track embedded in the original long DivX recording.
 The query is a word-level microphone recording that contains the target utterance.
 Our task is to find where the same acoustic event occurs in that reference.
 
+## Check the existing interval before replacing it
+
+The overview diagram separates two decisions: retain an existing interval when
+the waveform and boundaries agree, or use a better-supported location after a
+wider search and review. Missing indices enter the search branch directly.
+“Search full videos” means the recordings of the same speaker, including other
+blocks when source association is in doubt; it is not a search across other speakers.
+
+This is a decision summary, not a claim that every historical script used one
+conditional search loop. The supplemental re-audit computed local and global
+matches for every item. It flagged local or global absolute correlation below
+0.30, and used additional peak-ratio, duration, ordering and offset checks.
+Those are stage-specific screening criteria, not a universal pass threshold.
+High similarity alone cannot approve a wrong word, repetition or overlapping interval.
+[Implementation evidence E11](SOURCES.md)
+
+## Waveform retrieval
+
 1. Decode speech rather than the DTMF channel, and use a common sample rate.
    The historical search implementation used 4 kHz for efficient retrieval.
 2. Remove the mean and normalize signal energy. This reduces sensitivity to

@@ -1,45 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="268" viewBox="0 0 1100 268" role="img" aria-labelledby="title desc">
-  <title id="title">UASpeech alignment repair workflow</title>
-  <desc id="desc">Word recordings and the speech track in source videos enter waveform matching. Candidate intervals are checked against word order and frames, with manual review where needed. Approved video indices and audio recipes are frozen, then used to cut and verify full-frame clips.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="380" viewBox="0 0 1120 380" role="img" aria-labelledby="title desc">
+  <title id="title">Check the original interval, search when needed, then cut</title>
+  <desc id="desc">Extract camera speech using the existing frame index and compare its waveform with the word recording. Keep matching intervals with valid boundaries. For low similarity, boundary conflicts, or missing indices, search the same speaker's full recordings, review the new word and frame interval, and cut the word video.</desc>
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#64748b"/></marker>
+    <marker id="passArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#2b8569"/></marker>
   </defs>
-  <rect width="1100" height="268" rx="16" fill="#fff"/>
+  <rect width="1120" height="380" rx="16" fill="white"/>
   <g font-family="Arial, Helvetica, sans-serif" fill="#172b40">
     <g fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#arrow)">
-      <path d="M202 80 H219 V124 H241"/>
-      <path d="M202 176 H219 V124 H241"/>
-      <path d="M418 124 H457"/>
-      <path d="M634 124 H673"/>
-      <path d="M850 124 H889"/>
+      <path d="M210 148 H258"/>
+      <path d="M448 148 H498"/>
+      <path d="M448 45 H598 V108"/>
+      <path d="M598 186 V270"/>
+      <path d="M354 186 V308 H498" stroke-dasharray="5 4"/>
+      <path d="M698 308 H758"/>
+      <path d="M858 270 V222 H994 V186"/>
     </g>
-    <g stroke="#cbd5e1" fill="#f8fafc">
-      <rect x="24" y="44" width="178" height="72" rx="10"/>
-      <rect x="24" y="140" width="178" height="72" rx="10"/>
+    <path d="M698 148 H906" fill="none" stroke="#2b8569" stroke-width="2" marker-end="url(#passArrow)"/>
+    <rect x="24" y="108" width="186" height="78" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+    <rect x="260" y="108" width="188" height="78" rx="10" fill="#edf5ff" stroke="#9bbfe7"/>
+    <rect x="260" y="18" width="188" height="54" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+    <rect x="500" y="108" width="198" height="78" rx="10" fill="#edf5ff" stroke="#9bbfe7"/>
+    <rect x="908" y="108" width="176" height="78" rx="10" fill="#edf7f3" stroke="#99c7b6"/>
+    <rect x="500" y="270" width="198" height="76" rx="10" fill="#fff8e9" stroke="#d9bd80"/>
+    <rect x="760" y="270" width="198" height="76" rx="10" fill="#fff8e9" stroke="#d9bd80"/>
+    <g font-size="16" font-weight="600" text-anchor="middle">
+      <text x="117" y="140">Long video</text>
+      <text x="354" y="43">Word recording</text>
+      <text x="354" y="140">Use existing frames</text>
+      <text x="599" y="140">Compare waveforms</text>
+      <text x="996" y="140">Cut word video</text>
+      <text x="599" y="301">Search full videos</text>
+      <text x="859" y="301">Review new interval</text>
     </g>
-    <g font-size="16" text-anchor="middle">
-      <text x="113" y="76">Word recordings</text>
-      <text x="113" y="98" font-size="13" fill="#526579">Microphone audio</text>
-      <text x="113" y="171">Source videos</text>
-      <text x="113" y="193" font-size="13" fill="#526579">Embedded speech track</text>
-    </g>
-    <rect x="242" y="77" width="176" height="94" rx="10" fill="#edf5ff" stroke="#9bbfe7"/>
-    <rect x="458" y="77" width="176" height="94" rx="10" fill="#fff8e9" stroke="#d9bd80"/>
-    <rect x="674" y="77" width="176" height="94" rx="10" fill="#edf7f3" stroke="#99c7b6"/>
-    <rect x="890" y="77" width="186" height="94" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
-    <g font-size="15" font-weight="600" text-anchor="middle">
-      <text x="330" y="113">Waveform matching</text>
-      <text x="546" y="113">Check candidates</text>
-      <text x="762" y="113">Freeze corrections</text>
-      <text x="983" y="113">Cut &amp; verify</text>
-    </g>
-    <g font-size="12" text-anchor="middle" fill="#526579">
-      <text x="330" y="139">Find the same utterance</text>
-      <text x="546" y="139">Word order + frame review</text>
-      <text x="762" y="139">Indices + audio recipes</text>
-      <text x="983" y="139">Full-frame clips + audio</text>
-      <text x="546" y="199">Manual review where needed</text>
-      <text x="762" y="199">Keep valid word audio</text>
+    <g font-size="12" fill="#526579" text-anchor="middle">
+      <text x="117" y="163">Picture + camera speech</text>
+      <text x="354" y="62">Primary reference</text>
+      <text x="354" y="163">Extract camera speech</text>
+      <text x="599" y="163">Word vs camera audio</text>
+      <text x="996" y="163">Use checked frames</text>
+      <text x="599" y="325">Same speaker, all blocks</text>
+      <text x="859" y="325">Check word and frames</text>
+      <text x="801" y="126" fill="#21654f">Match + valid boundaries</text>
+      <text x="683" y="216">Low similarity</text>
+      <text x="683" y="233">or boundary conflict</text>
+      <text x="423" y="295">No index</text>
+      <text x="939" y="211">Confirmed</text>
     </g>
   </g>
 </svg>

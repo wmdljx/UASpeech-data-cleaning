@@ -2,8 +2,7 @@
 
 Corrected frame indices and code to reconstruct word-level audio and full-frame
 video clips from your licensed UASpeech files. **11 speakers · 8,415 indexed
-utterances.** No corpus audio or video is distributed; mouth-region cropping is
-outside this repository.
+utterances.** No corpus audio or video is distributed.
 
 [Quick start](#quick-start) · [Cleaning workflow](#cleaning-workflow) ·
 [Worked example](#worked-example) · [Detailed guide](docs/DETAILED_GUIDE.md)
@@ -11,57 +10,64 @@ outside this repository.
 ## Data coverage
 
 [UASpeech](https://speechtechnology.web.illinois.edu/uaspeech/) is an English
-isolated-word corpus for dysarthric speech research. Our inspected package has
-audio for 15 dysarthric speakers and 13 controls; 12 dysarthric speakers have video
-files, and nine have at least some original frame indices. These are local
-availability counts, not the official corpus population. B1–B3 are recording
-blocks of 255 utterances each (765 per complete speaker); B1/B3 supply training
-and validation data, and B2 supplies test data.
+isolated-word corpus for dysarthric speech research. The original UASpeech files
+we examined contain audio for 15 dysarthric speakers and 13 controls; 12 dysarthric
+speakers have video files, and nine have at least some original frame indices.
+The availability described below is based on these source files. B1–B3 are recording
+blocks of 255 utterances each (765 per complete speaker).
 
 ![Nested speaker sets: audio for 28 speakers, video for 12, and some original frame indices for nine.](docs/assets/speaker-sets.svg)
 
-*Before reconstruction. Counts refer to the whole nested set; IDs appear in their
-smallest region. M10 has video files but no verified target B2 recording.*
+*Before reconstruction. Counts refer to the whole nested set. M10 has partial
+video data, but its B2 recording is missing from these source files.*
 
 ### Speaker coverage, major issues and repairs
 
-Speakers are grouped from **greater to lesser speech impairment**, using the
-supplied intelligibility categories. “Yes” means complete video and index
-coverage **before repair**, not correct alignment.
+The table describes missing source video/indices and pairing problems **before
+repair**, grouped from greater to lesser speech impairment. “Yes” means complete
+video/index coverage, not correct alignment. Affected rates use the audited
+existing nine-speaker records; missing indices and later supplemental samples
+are counted separately. “—” means no comparable audited denominator.
 
-| Intelligibility | Speaker | Audio | Complete video + index | Main issue | Action |
-|---|---|---|---|---|---|
-| **Very low** | M04 | Yes | No: no video/index | No local video | Exclude from AV set |
-| | F03 | Yes | No: no video/index | No local video | Exclude from AV set |
-| | M12 | Yes | No: partial index | Missing B3 + 3 B2 indices; 1 isolated issue | Recover indices; repair |
-| | M01 | Yes | No: no video/index | No local video | Exclude from AV set |
-| **Low** | M07 | Yes | Yes | Cross-block mismatch | Reassign video sources |
-| | F02 | Yes | No: partial index | Missing B3 + 1 B2 index; B2 sequence shift | Recover indices; realign |
-| | M16 | Yes | Yes | 6 isolated issues | Review and repair |
-| **Medium** | M05 | Yes | No: no index | All three blocks unindexed | Reconstruct indices |
-| | F04 | Yes | No: partial index | 1 missing B3 index; B3 sequence shift | Recover index; realign |
-| | M11 | Yes | No: partial index | 84 missing B3 indices; supplemental interval errors | Recover indices; repair |
-| **High** | M09 | Yes | No: no index | All three blocks unindexed | Reconstruct indices |
-| | M14 | Yes | Yes | 13 isolated issues | Review and repair |
-| | M08 | Yes | Yes | 3 isolated issues | Review and repair |
-| | M10 | Yes | No: incomplete video; no index | B2-labeled file duplicates B3 | Exclude from AV set |
-| | F05 | Yes | Yes | 19 isolated issues | Review and repair |
+| Intelligibility | Speaker | Audio | Complete video + index | Main issue | Affected / audited | Action |
+|---|---|---|---|---|---|---|
+| **Very low** | M04 | Yes | No: no video/index | No source video | — | Exclude from AV set |
+| | F03 | Yes | No: no video/index | No source video | — | Exclude from AV set |
+| | M12 | Yes | No: partial index | Missing B3 + 3 B2 indices; 1 isolated issue | 1/499 (0.20%) | Recover indices; repair |
+| | M01 | Yes | No: no video/index | No source video | — | Exclude from AV set |
+| **Low** | M07 | Yes | Yes | Wrong block: mainly B1 audio → B3 video, B2 → B1, B3 → B2 | 765/765 (100%) | Reassign video sources |
+| | F02 | Yes | No: partial index | B2 video assignments shifted one word later; missing B3 + 1 B2 index | 256/509 (50.29%) | Recover indices; realign |
+| | M16 | Yes | Yes | 6 isolated issues | 6/763 (0.79%) | Review and repair |
+| **Medium** | M05 | Yes | No: no index | All three blocks unindexed | — | Reconstruct indices |
+| | F04 | Yes | No: partial index | B3 video assignments shifted one word later; 1 missing B3 index | 182/764 (23.82%) | Recover index; realign |
+| | M11 | Yes | No: partial index | 84 missing B3 indices; supplemental interval errors | 1/655 (0.15%) | Recover indices; repair |
+| **High** | M09 | Yes | No: no index | All three blocks unindexed | — | Reconstruct indices |
+| | M14 | Yes | Yes | 13 isolated issues | 13/765 (1.70%) | Review and repair |
+| | M08 | Yes | Yes | 3 isolated issues | 3/765 (0.39%) | Review and repair |
+| | M10 | Yes | No: incomplete video; no index | Missing B2 recording; B2-labeled file duplicates B3 | — | Exclude from AV set |
+| | F05 | Yes | Yes | 19 isolated issues | 19/761 (2.50%) | Review and repair |
 
-Isolated-issue counts come from the historical nine-speaker audit, not unresolved
-errors. That audit found **1,246 / 6,246 affected records (19.95%)**. Separately,
-we recovered **2,129 missing original indices**, including M05 and M09.
+The audit found **1,246 / 6,246 affected records (19.95%)**. Separately, we recovered
+**2,129 missing original indices**, including M05 and M09.
 [Counts and scope](docs/FINDINGS.md) · [Source inventory](docs/CORPUS.md)
 
 ## Cleaning workflow
 
-![Word recordings and embedded video speech enter waveform matching, candidate checks, frozen corrections, and clip reconstruction.](docs/assets/cleaning-pipeline.svg)
+Word-level videos used by a model are cut from long recordings. Each long video
+has an embedded camera speech track, which provides the audio reference for its
+picture timeline; extraction uses the recorded audio/video clock mapping.
+The word-level microphone recording is the primary reference unless inspection
+finds that it contains extraneous material or the wrong utterance.
 
-We match each word recording against the **speech track embedded in the source
-video**, using normalized cross-correlation of audio waveforms. Word order,
-neighboring intervals and manual frame-level review resolve uncertain matches.
-Valid word audio is retained; confirmed non-target material is trimmed, or the
-video speech is used when the word recording cannot supply the target.
-The approved indices and audio recipes—not a new match—define the released cuts.
+![Check word audio against camera speech at the original frames; keep a valid match, otherwise search full recordings, review new frames and cut.](docs/assets/cleaning-pipeline.svg)
+
+First, use the existing frame index to extract camera speech and compare it with
+the word recording using waveform similarity. Retain the interval when the match
+and boundaries are consistent. If similarity is low, boundaries conflict, or the
+index is missing, search the speaker's full recordings for better matches. Check
+the word, neighboring intervals and video frames before cutting at the corrected
+position. Confirmed audio problems are reviewed separately: trim non-target
+material or use the corresponding camera speech when necessary.
 [Matching method](docs/MATCHING.md)
 
 ## Quick start
@@ -105,11 +111,12 @@ cuts, **not** the earlier 25-fps mouth crops.
 
 ## Worked example
 
-**F02_B2_D0 — “Zero”.** The original listed video bounds were `[236,344)`;
-the corrected bounds are `[145,232)`. The old interval nearly coincides with the
-corrected “Six” interval. The word recording is unchanged.
+**F04_B3_UW14 — “lawyer”.** The original listed video bounds were `[18354,18509)`;
+the corrected bounds are `[18282,18350)`. The old interval falls at the neighboring
+“Missouri” recording: its 5.17-second speech pattern differs from the 2.26-second
+word audio. The corrected camera segment is 2.27 seconds. The word recording is unchanged.
 
-![F02_B2_D0: unchanged word recording, speech from the wrong original video interval, and speech from the corrected interval.](docs/assets/alignment-case.png)
+![F04_B3_UW14: the word recording and corrected camera segment have corresponding speech bursts; the old interval contains a longer, different pattern.](docs/assets/alignment-case-lawyer.png)
 
 Each row starts at its own clip boundary and is scaled to its own peak; no extra
 time shift or stretching is fitted to improve similarity. Recording noise remains
@@ -119,7 +126,7 @@ Generate a three-track comparison from your licensed files:
 
 ```bash
 python -m pip install matplotlib
-python examples/plot_alignment_case.py --raw-root /path/to/uaspeech_ORIGIN --output ./local/F02_B2_D0-waveforms.png
+python examples/plot_alignment_case.py --raw-root /path/to/uaspeech_ORIGIN --output ./local/F04_B3_UW14-waveforms.png
 ```
 
 The English labels distinguish **Word-level microphone recording**, **Video speech
