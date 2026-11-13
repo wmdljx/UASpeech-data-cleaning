@@ -32,7 +32,11 @@ def main():
         if p.suffix not in ALLOWED and p.name != '.gitignore':
             errors.append(f'Forbidden publication file type: {rel}')
         if p.suffix == '.png':
-            if rel.as_posix() not in {'docs/assets/review-tool.png','docs/assets/waveform-demo.png'}:
+            # The real-case figure was visually checked and its GitHub display
+            # authorization confirmed by the owner on 2026-11-13. This list
+            # allows that exact asset, not arbitrary licensed-data figures.
+            if rel.as_posix() not in {'docs/assets/review-tool.png','docs/assets/waveform-demo.png',
+                                     'docs/assets/alignment-case.png'}:
                 errors.append(f'Unreviewed bitmap: {rel}')
             continue
         s = p.read_text(encoding='utf-8')

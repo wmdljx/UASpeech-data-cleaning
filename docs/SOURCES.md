@@ -1,6 +1,7 @@
 # Sources, claim scope and implementation provenance
 
-Checked on 2026-11-03. The source checks below are automated/file-based and
+Initial checks: 2026-11-03; worked-example checks added on 2026-11-13.
+The source checks below are automated/file-based and
 assistant-assisted cross-checks; this document does not invent a human sign-off.
 The owners retain final scientific and publication approval. Restricted source
 documents and media are not copied into this repository.
@@ -17,6 +18,7 @@ documents and media are not copied into this repository.
 | E7 | Decoder/header checks of all 37 source DivX files; speech-channel checks and stored 33-source mappings | Stereo 44.1-kHz streams, nominal 30000/1001 fps, explicit speech-channel selection and clock mapping. Tone dominance is not asserted universally. |
 | E8 | Tests and isolated reconstruction runs described in [VERIFICATION.md](VERIFICATION.md) | What this portable implementation has actually been tested to reproduce. |
 | E9 | Licensed package `UASpeech_original_FM/UASpeech/doc/speaker_wordlist.xls`, `Speaker` sheet, `Speech Intelligibility (%)` column; read directly on 2026-11-03 | Intelligibility scores and supplied groups for the 15 locally available dysarthric speakers; “Mid” normalized to “Medium”. The sheet also lists speakers outside our local data inventory and is not used as proof of media availability. |
+| E10 | `UASpeech_video_0/UASpeech/video/F02/F02_B2_frame_index.txt`, line 7; word labels in `UASpeech_original_FM/UASpeech/mlf/F02/F02_word.mlf`; approved rows `F02_B2_D0` and `F02_B2_D6`; [case record](../examples/alignment_case.json) | Original listed Zero bounds 236–344; corrected Zero [145,232) and Six [236,340); unchanged word audio. Checked against licensed sources on 2026-11-13. |
 
 ## Distinguishing findings from release mechanics
 
@@ -42,9 +44,11 @@ separate view and do not imply identical audio preprocessing for every item.
 - The new full-frame cutter selects approved source ordinals and re-encodes them
   with an explicitly selected, clock-mapped speech track. It does not reproduce
   the prior mouth-ROI representation or include AV-HuBERT/dlib code or models.
-- The screenshot uses the existing review interface. Its synthetic waveform
-  display is labeled; no original faces, playable audio, video, or true corpus
-  waveform payloads are redistributed. Review source/SQLite records stay private.
+- The archived screenshot uses the existing review interface with labeled
+  synthetic waveforms. The shorter homepage provides a documented real case,
+  a static waveform figure and a local plotting script. The owner confirmed
+  GitHub display authorization for that figure on 2026-11-13. Audio files, sample
+  arrays, caches and review source/SQLite records stay private.
 
 Versioned metadata, source hashes and the read-only inventory script support
 independent checking. They are not a claim that all semantic decisions have been

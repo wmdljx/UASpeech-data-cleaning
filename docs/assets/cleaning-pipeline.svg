@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="268" viewBox="0 0 1100 268" role="img" aria-labelledby="title desc">
+  <title id="title">UASpeech alignment repair workflow</title>
+  <desc id="desc">Word recordings and the speech track in source videos enter waveform matching. Candidate intervals are checked against word order and frames, with manual review where needed. Approved video indices and audio recipes are frozen, then used to cut and verify full-frame clips.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker>
+  </defs>
+  <rect width="1100" height="268" rx="16" fill="#fff"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#172b40">
+    <g fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#arrow)">
+      <path d="M202 80 H219 V124 H241"/>
+      <path d="M202 176 H219 V124 H241"/>
+      <path d="M418 124 H457"/>
+      <path d="M634 124 H673"/>
+      <path d="M850 124 H889"/>
+    </g>
+    <g stroke="#cbd5e1" fill="#f8fafc">
+      <rect x="24" y="44" width="178" height="72" rx="10"/>
+      <rect x="24" y="140" width="178" height="72" rx="10"/>
+    </g>
+    <g font-size="16" text-anchor="middle">
+      <text x="113" y="76">Word recordings</text>
+      <text x="113" y="98" font-size="13" fill="#526579">Microphone audio</text>
+      <text x="113" y="171">Source videos</text>
+      <text x="113" y="193" font-size="13" fill="#526579">Embedded speech track</text>
+    </g>
+    <rect x="242" y="77" width="176" height="94" rx="10" fill="#edf5ff" stroke="#9bbfe7"/>
+    <rect x="458" y="77" width="176" height="94" rx="10" fill="#fff8e9" stroke="#d9bd80"/>
+    <rect x="674" y="77" width="176" height="94" rx="10" fill="#edf7f3" stroke="#99c7b6"/>
+    <rect x="890" y="77" width="186" height="94" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+    <g font-size="15" font-weight="600" text-anchor="middle">
+      <text x="330" y="113">Waveform matching</text>
+      <text x="546" y="113">Check candidates</text>
+      <text x="762" y="113">Freeze corrections</text>
+      <text x="983" y="113">Cut &amp; verify</text>
+    </g>
+    <g font-size="12" text-anchor="middle" fill="#526579">
+      <text x="330" y="139">Find the same utterance</text>
+      <text x="546" y="139">Word order + frame review</text>
+      <text x="762" y="139">Indices + audio recipes</text>
+      <text x="983" y="139">Full-frame clips + audio</text>
+      <text x="546" y="199">Manual review where needed</text>
+      <text x="762" y="199">Keep valid word audio</text>
+    </g>
+  </g>
+</svg>

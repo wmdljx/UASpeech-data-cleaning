@@ -1,9 +1,26 @@
 # Verification and limits
 
 This verifies the portable package, not a new assertion that every utterance is
-semantically correct. Restricted test outputs remain outside the repository.
+semantically correct. Restricted test outputs remain outside the tracked files.
 
-## Completed checks
+## Documentation and plotting update — 2026-11-13
+
+- The shorter homepage preserves the previous version in `DETAILED_GUIDE.md`.
+  All 15 dysarthric speakers remain, grouped by supplied intelligibility from
+  very low to high; no clinical diagnosis or source data was changed.
+- All eight unit/integration tests pass, including three new plotting tests for
+  amplitude-bin extrema, clock-mapped durations and local-output guards.
+- The real `F02_B2_D0` plot was generated locally from licensed inputs and visually
+  checked. Original-index SHA-256/line, source-video SHA-256, unchanged word-audio
+  PCM hash and corrected-frame metadata are checked by the script. It displays
+  the actual recorded waveforms, not synthetic replacements.
+- One real static waveform figure is included after owner confirmation of GitHub
+  display authorization on 2026-11-13. Its decoded cache stays local. No original
+  audio/video, sample arrays or review database is added to the repository.
+- Metadata validation still covers 8,415 records across 11 speakers. This update
+  changes presentation and adds a plotting example; it is not a new dataset audit.
+
+## Earlier reconstruction checks
 
 - Exported 8,415 unique approved records for 11 speakers; current master CSV/TSV
   hashes match the source release. Shared frame/source/text/split fields match
