@@ -110,6 +110,11 @@ six speakers and seven source videos were reconstructed, covering all four word-
 operations, M07 source reassignment and M05/M09 recovered indices. A second run
 verified and skipped all nine. Two real F02 cuts produced identical decoded video
 frame hashes and camera PCM to the previous single-clip implementation.
+A fresh clone from GitHub was installed and used outside the checkout to build
+the lawyer sample and then skip it after checksum verification. All 13 automated
+tests passed in that checkout. Full preflight passed for all 8,415 records,
+covering 33 source videos and 8,409 required input files; this was an input check,
+not a full rendering of 8,415 clips.
 
 Run `python -m unittest discover -s tests -v` and `python tools/check_release.py`.
 Tests cover audio recipes, source-frame identity, batched versus single cutting,
