@@ -15,7 +15,7 @@ rights to redistribute those outputs.
 
 Only source identifiers, corrected indices, processing recipes, audit statistics,
 implementation code, non-corpus illustrations and static waveform examples are
-included. Archived review illustrations use labeled synthetic signals.
+included. Historical review illustrations remain in the archived version.
 
 The bundled UASpeech license explicitly permits images, video and waveforms in
 professional conference presentations and journals with the Kim et al. (2008)
@@ -23,8 +23,8 @@ citation. It does not explicitly cover GitHub or website display. On 2026-11-13,
 the project owner confirmed GitHub waveform display authorization and subsequently
 requested a quieter replacement example. The current illustration is
 `F04_B3_UW14` in `docs/assets/alignment-case-lawyer.png`; the earlier `F02_B2_D0`
-figure is retained. This does not authorize distribution of audio/video or grant
+figure remains in the archived version. This does not authorize distribution of audio/video or grant
 readers a blanket license for other derived figures. The plotting example saves local figures and caches;
 confirm the applicable rights before distributing any outputs.
 
-See [sources and verification](docs/SOURCES.md) for provenance and attribution.
+See [methods and sources](docs/METHODS.md) and [verification scope](docs/USAGE.md#verification-scope).

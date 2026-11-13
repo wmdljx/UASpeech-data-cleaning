@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "Please cite the original UASpeech paper below. Attribution for this independent reconstruction will be added by its owners; it is not authored by the corpus creators."
+title: "UASpeech alignment repair"
+type: software
+authors:
+  - name: "UASpeech alignment repair contributors"
+version: 0.3.0
+url: "https://github.com/wmdljx/UASpeech-data-cleaning"
+preferred-citation:
+  type: conference-paper
+  title: "Dysarthric Speech Database for Universal Access Research"
+  authors:
+    - family-names: Kim
+      given-names: H.
+    - family-names: Hasegawa-Johnson
+      given-names: M.
+    - family-names: Perlman
+      given-names: A.
+    - family-names: Gunderson
+      given-names: J.
+    - family-names: Huang
+      given-names: T.
+    - family-names: Watkin
+      given-names: K.
+    - family-names: Frame
+      given-names: S.
+  year: 2008
+  collection-title: Interspeech
+  start: 1741
+  end: 1744
+  url: "https://www.isca-archive.org/interspeech_2008/kim08c_interspeech.html"

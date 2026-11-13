@@ -40,18 +40,6 @@
     "source_files.tsv": {
       "rows": 33,
       "sha256": "23e884bb5e8533808376b7d2ce3b4c902f095c5fa3db6c9b204ffdcfb6969865"
-    },
-    "legacy_audit.csv": {
-      "rows": 6246,
-      "sha256": "224ee8638a50e726d4c8ef07814346fbfedb4d29a0dab17d0ebdc890f55736d3"
-    },
-    "speaker_statistics.csv": {
-      "rows": 11,
-      "sha256": "9d28db7bd375d8a1963a1a3b4ae64c2bc8cb88f0a2b24603b5a6fc3b28598762"
-    },
-    "speaker_availability.csv": {
-      "rows": 28,
-      "sha256": "45b43b62b98037cf314b39ed46debf01322dbf0b5346549810485ffdce66aab5"
     }
   },
   "output_note": "Manifest describes expected local outputs, not distributed media. Raw cuts are not the prior 25-fps ROI clips. All 8415 approved intervals are eligible; the historical ROI exclusion is retained separately."

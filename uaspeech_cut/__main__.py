@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 import json
+import subprocess
 from pathlib import Path
 
 from .common import checked_path, read_table, select, sha256
@@ -74,9 +75,17 @@ def validate(metadata):
 
 def main():
     parser = argparse.ArgumentParser(description="Reconstruct word audio and full-frame video from approved indices; no ROI")
-    parser.add_argument("--metadata", type=Path, default=Path("metadata"))
+    parser.add_argument("--metadata", type=Path, default=Path(__file__).resolve().parents[1] / "metadata")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("validate", help="Check tables and declared fingerprints without corpus media")
+    for kind in ('check', 'build'):
+        command = commands.add_parser(kind, help='Preflight inputs' if kind == 'check' else 'Build paired audio/video; resume verified outputs')
+        command.add_argument('--raw-root', type=Path, required=True)
+        command.add_argument('--output', type=Path, required=True)
+        command.add_argument('--id', action='append')
+        command.add_argument('--speaker')
+        command.add_argument('--workers', type=int, default=1, help='Parallel video sources, 1..4 (default 1)')
+        command.add_argument('--batch-size', type=int, default=8, help='Clips per shared decode, 1..8')
     for kind in ("audio", "video"):
         command = commands.add_parser(kind)
         command.add_argument("--raw-root", type=Path, required=True)
@@ -84,6 +93,16 @@ def main():
         command.add_argument("--id", action="append", help="Repeat for multiple IDs; without selection, process all")
         command.add_argument("--speaker")
     args = parser.parse_args()
+    if args.command in {'check', 'build'}:
+        from .build import build
+        try:
+            build(args.metadata, args.raw_root, args.output, args.id, args.speaker,
+                  args.workers, args.batch_size, check_only=args.command == 'check')
+        except (ValueError, OSError, KeyError, subprocess.CalledProcessError) as exc:
+            parser.exit(1, f'Error: {exc}\n')
+        except KeyboardInterrupt:
+            parser.exit(130, 'Interrupted. Source files were not changed; rerun to check and resume outputs.\n')
+        return
     if args.command == "validate":
         print(json.dumps(validate(args.metadata), indent=2))
         return

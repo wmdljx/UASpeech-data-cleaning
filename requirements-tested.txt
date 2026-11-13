@@ -1,0 +1,4 @@
+# Reference Python 3.10 environment. FFmpeg/ffprobe must be installed separately.
+numpy==1.23.5
+scipy==1.10.1
+matplotlib==3.7.5

@@ -5,7 +5,7 @@ video clips from your licensed UASpeech files. **11 speakers · 8,415 indexed
 utterances.** No corpus audio or video is distributed.
 
 [Quick start](#quick-start) · [Cleaning workflow](#cleaning-workflow) ·
-[Worked example](#worked-example) · [Detailed guide](docs/DETAILED_GUIDE.md)
+[Worked example](#worked-example) · [Usage guide](docs/USAGE.md)
 
 ## Data coverage
 
@@ -49,7 +49,7 @@ are counted separately. “—” means no comparable audited denominator.
 
 The audit found **1,246 / 6,246 affected records (19.95%)**. Separately, we recovered
 **2,129 missing original indices**, including M05 and M09.
-[Counts and scope](docs/FINDINGS.md) · [Source inventory](docs/CORPUS.md)
+[Counts and sources](docs/METHODS.md#sources-and-scope)
 
 ## Cleaning workflow
 
@@ -68,35 +68,39 @@ index is missing, search the speaker's full recordings for better matches. Check
 the word, neighboring intervals and video frames before cutting at the corrected
 position. Confirmed audio problems are reviewed separately: trim non-target
 material or use the corresponding camera speech when necessary.
-[Matching method](docs/MATCHING.md)
+[Matching method](docs/METHODS.md)
 
 ## Quick start
 
-Use Python 3.10+ and install FFmpeg/ffprobe separately. No GPU is needed.
+Python 3.10 is the tested setup; install FFmpeg/ffprobe separately. No GPU is needed.
 Obtain the source files through the [official access process](https://speechtechnology.web.illinois.edu/uaspeech/).
 
 ```bash
 git clone https://github.com/wmdljx/UASpeech-data-cleaning.git
 cd UASpeech-data-cleaning
+python3.10 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-tested.txt
 python -m pip install -e .
 ffmpeg -version
 ffprobe -version
 python -m uaspeech_cut validate
 
-python -m uaspeech_cut audio --raw-root /path/to/uaspeech_ORIGIN --output ./outputs --id F02_B2_D0
-python -m uaspeech_cut video --raw-root /path/to/uaspeech_ORIGIN --output ./outputs --id F02_B2_D0
+python -m uaspeech_cut build --raw-root /path/to/uaspeech_ORIGIN --output ./outputs --id F04_B3_UW14
 ```
 
 The raw root contains the original distribution directories, including
 `UASpeech_original_FM`, `UASpeech_video_0` and `UASpeech_video_1`.
 Keep outputs outside that source tree.
 
-The two commands produce paired word audio in `outputs/audio/F02/`, a full-frame
+The build command produces paired word audio in `outputs/audio/F04/`, a full-frame
 clip in `outputs/video/`, its embedded speech in `outputs/camera_audio/`, and a
-video-build receipt in `outputs/receipts/`. Use `--speaker F02` instead of
-`--id` for a speaker, or omit both to process all records. Run both commands.
-Video outputs are not overwritten; use a fresh output folder for another build.
-Full-dataset cutting takes time because source frames are decoded sequentially.
+video-build receipt in `outputs/receipts/`. The MP4 contains camera speech;
+the separate word WAV is the paired audio. Use `--speaker F04` instead of
+`--id` for a speaker, or omit both to process all records. Input checks run first;
+rerunning verifies and skips completed outputs. Build summaries go to `outputs/reports/`.
+Use `--workers 2` to process two video sources in parallel. Clips from the same
+source share bounded decoding batches. [Setup, resume and troubleshooting](docs/USAGE.md)
 
 | File | Use |
 |---|---|
@@ -107,7 +111,7 @@ Full-dataset cutting takes time because source frames are decoded sequentially.
 
 Source frames use `[begin,end)` at approximately 29.97 fps. These are full-frame
 cuts, **not** the earlier 25-fps mouth crops.
-[Input layout, audio recipes and conventions](docs/RECONSTRUCTION.md)
+[Fields, audio recipes and conventions](docs/DATA_FORMAT.md)
 
 ## Worked example
 
@@ -133,13 +137,13 @@ The English labels distinguish **Word-level microphone recording**, **Video spee
 audio — original frame index**, and **Video speech audio — corrected frame index**.
 The custom review tool supports listening and frame-level checks; its interface
 screenshot and source are not part of this quick guide.
-[Case evidence and plotting conventions](docs/ALIGNMENT_EXAMPLE.md)
+[Case evidence and plotting conventions](docs/METHODS.md#homepage-example-f04_b3_uw14-lawyer)
 
 ## Further reading
 
-[Detailed guide (preserved)](docs/DETAILED_GUIDE.md) ·
-[Verification](docs/VERIFICATION.md) · [Sources](docs/SOURCES.md) ·
-[Interactive viewer proposal—not implemented](docs/WEB_DEMO_PLAN.md)
+[Usage and troubleshooting](docs/USAGE.md) ·
+[File formats](docs/DATA_FORMAT.md) · [Methods and sources](docs/METHODS.md) ·
+[Archived full version](https://github.com/wmdljx/UASpeech-data-cleaning/tree/archive/detailed-2026-11-13)
 
 Run `python -m unittest discover -s tests -v` for tests. The repository remains a
 private draft pending code-license and publication approval; see [rights](LICENSE.md).

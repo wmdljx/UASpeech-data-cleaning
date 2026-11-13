@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import wave
+from functools import lru_cache
 
 
 def read_table(path):
@@ -21,6 +22,18 @@ def sha256(path):
         for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
             result.update(chunk)
     return result.hexdigest()
+
+
+def run_hasher():
+    """Cache large-file hashes only within one run, invalidating on stat changes."""
+    @lru_cache(maxsize=None)
+    def digest(path, size, mtime, ctime):
+        return sha256(path)
+    def cached(path):
+        path = Path(path).resolve()
+        st = path.stat()
+        return digest(str(path), st.st_size, st.st_mtime_ns, st.st_ctime_ns)
+    return cached
 
 
 def checked_path(root, relative):

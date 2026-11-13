@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 """Check the intended publication tree; local draft files are excluded explicitly."""
-import csv
 import json
 from pathlib import Path
 import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC_FILES = ['README.md', 'LICENSE.md', 'pyproject.toml', '.gitignore']
+PUBLIC_FILES = ['README.md', 'LICENSE.md', 'pyproject.toml', '.gitignore', 'CITATION.cff', 'requirements-tested.txt']
 PUBLIC_DIRS = ['docs', 'metadata', 'uaspeech_cut', 'tests', 'examples']
-PUBLIC_TOOLS = ['tools/check_release.py', 'tools/inspect_source_package.py']
-ALLOWED = {'.md','.toml','.py','.json','.csv','.tsv','.svg','.png'}
+PUBLIC_TOOLS = ['tools/check_release.py']
+ALLOWED = {'.md','.toml','.py','.json','.csv','.tsv','.svg','.png','.cff','.txt'}
 
 
 def public_files():
@@ -32,12 +31,9 @@ def main():
         if p.suffix not in ALLOWED and p.name != '.gitignore':
             errors.append(f'Forbidden publication file type: {rel}')
         if p.suffix == '.png':
-            # The owner confirmed GitHub waveform display authorization on
-            # 2026-11-13, then requested the quieter lawyer example. Both
-            # static figures were visually checked; arbitrary bitmaps fail.
-            if rel.as_posix() not in {'docs/assets/review-tool.png','docs/assets/waveform-demo.png',
-                                     'docs/assets/alignment-case.png',
-                                     'docs/assets/alignment-case-lawyer.png'}:
+            # Only the owner-authorized, visually checked lawyer plot remains
+            # in the active tree; historical illustrations are archived.
+            if rel.as_posix() != 'docs/assets/alignment-case-lawyer.png':
                 errors.append(f'Unreviewed bitmap: {rel}')
             continue
         s = p.read_text(encoding='utf-8')
@@ -53,10 +49,8 @@ def main():
     sys.path.insert(0,str(ROOT))
     from uaspeech_cut.__main__ import validate
     result = validate(ROOT/'metadata')
-    with (ROOT/'metadata/legacy_audit.csv').open() as f:
-        audit = list(csv.DictReader(f))
-    if len(audit) != 6246 or sum(int(r['confirmed_affected']) for r in audit) != 1246:
-        errors.append('Historical audit totals changed')
+    if result['records'] != 8415 or result['speakers'] != 11:
+        errors.append('Approved release coverage changed')
     print(json.dumps(dict(status='FAIL' if errors else 'PASS',file_count=len(files),
         metadata=result,errors=errors,note='Bitmap has separate visual review; this scan cannot certify rights.'),indent=2))
     if errors:
