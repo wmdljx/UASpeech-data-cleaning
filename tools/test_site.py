@@ -95,7 +95,7 @@ with sync_playwright() as p:
     page.locator('#use').screenshot(path=str(output/'builder.png'))
     for href in page.locator('a[href^="#"]').evaluate_all('(a)=>a.map(x=>x.getAttribute("href"))'):
         ok(f'anchor {href}',href=='#' or page.locator(href).count()>0)
-    for resource in ['data.js','app.js','style.css','assets/alignment-case-lawyer.png','assets/speaker-sets.svg','assets/cleaning-pipeline.svg','sitemap.xml','robots.txt','favicon.svg']:
+    for resource in ['data.js','app.js','style.css','workflow.js','workflow.css','assets/alignment-case-lawyer.png','assets/speaker-sets.svg','assets/cleaning-pipeline.svg','sitemap.xml','robots.txt','favicon.svg']:
         ok(f'asset {resource}',context.request.get(url.rstrip('/')+'/'+resource).status==200)
     ok('no external page requests',all(urlparse(r).netloc==urlparse(url).netloc for r in requests))
     ok('no JavaScript errors',not errors)

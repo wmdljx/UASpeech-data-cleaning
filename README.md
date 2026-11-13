@@ -38,6 +38,23 @@ not uploaded, stored in cookies or included in URL parameters. There are no
 analytics scripts or third-party font requests. Hosting providers may keep their
 own access logs. There is no audio playback or upload function.
 
+## Illustrated workflow
+
+The Method section follows the original cleaning diagram with three selectable
+routes: valid existing index, incorrect index, and missing index. Each stage has
+an illustration; play/pause, previous/next and restart controls advance the
+explanation, not an actual processing job. Playback pauses when the walkthrough
+leaves the viewport or the browser tab is hidden. Reduced-motion preferences
+disable decorative motion; timed stage changes start only on an explicit click.
+
+`workflow.js` and `workflow.css` implement the walkthrough without dependencies.
+The comparison uses excerpts of the authorized lawyer waveform figure. Source
+positions come from that real case. The valid-index and missing-index routes are
+explicitly labeled alternative scenarios, not additional historical claims about
+that sample. Filmstrip icons, search traces and the review view are schematic;
+no source video frames, computed similarity scores or editable approvals are
+presented. Reproduction still runs locally using the main-branch tool.
+
 The core overview and links are static HTML so they remain readable without
 JavaScript and are available to search engines. A sitemap and canonical URL are
 provided; neither guarantees Google indexing or search ranking. If adding a custom
@@ -52,4 +69,5 @@ needed; visitors do not need them. Start the local server first, then run:
 
 ```bash
 python tools/test_site.py http://127.0.0.1:8794 /path/to/screenshots
+python tools/test_workflow.py http://127.0.0.1:8794 /path/to/workflow-screenshots
 ```

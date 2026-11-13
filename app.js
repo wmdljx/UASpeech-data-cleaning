@@ -6,7 +6,7 @@
   if (!data) return;
   const samples = new Map(data.samples.map(r => [r[0], r]));
   const finalSpeakers = data.speakers.filter(s => s.final > 0);
-  let selectedSpeaker = 'F02', scope = 'audio', repaired = false, route = 'mismatch', step = 0;
+  let selectedSpeaker = 'F02', scope = 'audio', repaired = false;
   const escape = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   $('#data-version').textContent = `Metadata snapshot: ${data.commit.slice(0, 7)}`;
 
@@ -111,28 +111,6 @@
   }
   $$('[data-block]').forEach(b=>b.addEventListener('click',()=>showBlock(b.dataset.block)));
   showBlock('B1');
-
-  const steps = [
-    ['Read the existing frames','Check the existing interval','Use the recorded source and frame bounds to extract camera speech from the long video. The word-level recording is the initial reference.','The picture timeline and decoded audio are related using the stored clock mapping.'],
-    ['Compare the waveforms','Check whether the recordings correspond','Compare waveform shapes using normalized cross-correlation. Keep the interval only when the correspondence and boundaries are consistent.','A high score is not proof of word identity; a repeated attempt or wrong source still needs checking.'],
-    ['Search the long videos','Find a better-supported location','Search the same speaker’s complete recordings, including other blocks when source association is uncertain. Keep alternative peaks when the result is ambiguous.','Missing indices enter here directly. Do not force an incorrect neighboring anchor through the remaining word sequence.'],
-    ['Review the new interval','Verify the word and its boundaries','Use the custom review tool to listen, inspect the long-video context, and adjust boundaries frame by frame. Check neighboring words and conflicts.','This describes the historical review process. The public repository supplies final indices, not the review server or an automatic approval system.'],
-    ['Cut the word video','Reconstruct from the checked frames','Use the final per-word source and interval to cut the full-frame video. Reproduce paired word audio from its separate recorded instructions.','The build command checks inputs, reconstructs the selected records and writes verification receipts.']
-  ];
-  const paths = {valid:[0,1,4],mismatch:[0,1,2,3,4],missing:[2,3,4]};
-  function showStep(n) {
-    step=n;
-    const s=steps[n];$('#step-number').textContent=`Stage ${String(n+1).padStart(2,'0')}`;$('#step-title').textContent=s[1];$('#step-description').textContent=s[2];$('#step-note').textContent=s[3];
-    $$('[data-step]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.step)===n)));
-  }
-  function renderRoute() {
-    $('#method-steps').innerHTML=steps.map((s,i)=>`<button data-step="${i}" aria-pressed="false" ${paths[route].includes(i)?'':'disabled'}><span>${String(i+1).padStart(2,'0')}${paths[route].includes(i)?'':' / skip'}</span><strong>${s[0]}</strong></button>`).join('');
-    $$('[data-step]').forEach(b=>b.addEventListener('click',()=>showStep(Number(b.dataset.step))));
-    showStep(paths[route][0]);
-  }
-  $$('[data-route]').forEach(b=>b.addEventListener('click',()=>{
-    route=b.dataset.route;$$('[data-route]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderRoute();
-  }));renderRoute();
 
   $('#build-speaker').innerHTML=finalSpeakers.map(s=>`<option value="${s.id}" ${s.id==='F04'?'selected':''}>${s.id} · 765 records</option>`).join('');
   const shellQuote=s=>"'"+s.replace(/'/g,"'\"'\"'")+"'";
