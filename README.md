@@ -33,10 +33,9 @@ checksums. It does not read licensed audio or video. The lawyer figure and origi
 SVGs are copied from the approved main-branch assets. The two waveforms shown as
 before/after are excerpts of that authorized image, not regenerated sound samples.
 
-The site runs entirely in the browser. Folder paths in the command builder are
-not uploaded, stored in cookies or included in URL parameters. There are no
+The site runs entirely in the browser. There are no uploads, command forms,
 analytics scripts or third-party font requests. Hosting providers may keep their
-own access logs. There is no audio playback or upload function.
+own access logs. Reconstruction instructions remain on the main branch.
 
 ## Illustrated workflow
 
@@ -48,12 +47,15 @@ leaves the viewport or the browser tab is hidden. Reduced-motion preferences
 disable decorative motion; timed stage changes start only on an explicit click.
 
 `workflow.js` and `workflow.css` implement the walkthrough without dependencies.
-The comparison uses excerpts of the authorized lawyer waveform figure. Source
-positions come from that real case. The valid-index and missing-index routes are
-explicitly labeled alternative scenarios, not additional historical claims about
-that sample. Filmstrip icons, search traces and the review view are schematic;
-no source video frames, computed similarity scores or editable approvals are
-presented. Reproduction still runs locally using the main-branch tool.
+The incorrect-index route uses the authorized lawyer waveform figure, real
+source positions and a corrected-waveform comparison at verification. The valid-
+and missing-index routes use only schematic signals and no real sample IDs.
+Missing indices route both inputs directly to search. The constructed search
+signals illustrate a fixed query, a moving window of equal duration, and the
+current candidate comparison; they are not a historical search trace or computed
+similarity scores. Candidates are labeled separately from verified intervals.
+The pace defaults to 10 seconds per stage, with 6- and 15-second options. No
+source video frames or editable approvals are presented.
 
 The core overview and links are static HTML so they remain readable without
 JavaScript and are available to search engines. A sitemap and canonical URL are
@@ -63,8 +65,8 @@ domain, update the canonical/social URL and sitemap together.
 ## Checks
 
 `tools/test_site.py` uses Playwright and an already-installed Chromium to check
-the page at desktop and mobile sizes, all scenarios and case mappings, command
-escaping and source consistency. Install those test dependencies separately if
+the page at desktop and mobile sizes, all scenarios and case mappings, removed-form links,
+source consistency, search-window behavior and playback controls. Install those test dependencies separately if
 needed; visitors do not need them. Start the local server first, then run:
 
 ```bash

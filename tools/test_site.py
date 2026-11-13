@@ -1,7 +1,6 @@
 """Browser smoke tests. Run against a local HTTP preview, never source media."""
 import json
 from pathlib import Path
-import shlex
 import sys
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
@@ -17,7 +16,7 @@ def ok(name, value=True):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True,args=['--no-sandbox','--disable-dev-shm-usage'])
     context = browser.new_context(viewport={'width':1440,'height':1000},device_scale_factor=1,
-                                  permissions=['clipboard-read','clipboard-write'],reduced_motion='reduce')
+                                  reduced_motion='reduce')
     page=context.new_page(); errors=[]; requests=[]
     page.on('pageerror',lambda e:errors.append(str(e)))
     page.on('request',lambda r:requests.append(r.url))
@@ -34,7 +33,7 @@ with sync_playwright() as p:
         page.locator(f'[data-speaker={sid}]').click()
         ok(f'speaker {sid}',page.locator('#speaker-id').inner_text()==sid)
     page.locator('[data-speaker=M10]').click()
-    ok('excluded speaker not offered for building',page.locator('#speaker-use').get_attribute('aria-disabled')=='true')
+    ok('excluded speaker correctly labeled',page.locator('#final-count').inner_text()=='Excluded')
     page.locator('[data-speaker=F02]').click()
     ok('F02 audit rate', '50.29%' in page.locator('#speaker-rate').inner_text())
     page.locator('#after-button').click()
@@ -55,34 +54,13 @@ with sync_playwright() as p:
         ok(f'{block} sources rendered',page.locator('.mapping-item').count()==len(expected))
         for x in expected:
             ok(f'{block} {x["source"]} actual count',f'{x["count"]} / 255' in page.locator('#mapping-results').inner_text())
-    page.locator('[data-example]').last.click()
-    ok('mapping sample transfers to command builder','--id M07_B3_' in page.locator('#build-command').inner_text())
     for route,count in [('valid',3),('missing',3),('mismatch',5)]:
-        page.locator(f'[data-route={route}]').click()
+        page.locator(f'button[data-route={route}]').click()
         ok(f'{route} method path',page.locator('[data-step]:enabled').count()==count)
     page.locator('[data-step="4"]').click()
-    ok('step explanation', 'Reconstruct' in page.locator('#step-title').inner_text())
-    page.locator('#sample-id').fill('INVALID')
-    ok('invalid IDs cannot generate commands',page.locator('#copy-command').is_disabled())
-    page.locator('#sample-id').fill('F04_B3_UW14')
-    path="/data/O'Brien $(not_executed)/raw"
-    page.locator('#raw-root').fill(path)
-    command=page.locator('#build-command').inner_text()
-    args=shlex.split(command.replace('\\\n',''))
-    ok('safe shell quoting',args[args.index('--raw-root')+1]==path)
-    page.locator('#copy-command').click()
-    page.wait_for_function('document.querySelector("#copy-status").textContent.startsWith("Copied")')
-    ok('clipboard matches command',page.evaluate('navigator.clipboard.readText()')==command)
-    page.locator('[name=build-scope][value=speaker]').check()
-    page.locator('#build-speaker').select_option('M09')
-    ok('speaker command','--speaker M09' in page.locator('#build-command').inner_text())
-    page.locator('[name=build-scope][value=all]').check();page.locator('#workers').select_option('2')
-    command=page.locator('#build-command').inner_text()
-    ok('all-record command','--id' not in command and '--speaker' not in command and '--workers 2' in command)
-    page.locator('#raw-root').fill('./outputs')
-    ok('identical folders rejected',page.locator('#copy-command').is_disabled())
-    page.locator('#raw-root').fill('/path/to/uaspeech_ORIGIN')
-    page.locator('[name=build-scope][value=sample]').check();page.locator('#workers').select_option('1')
+    ok('step explanation', 'Extract' in page.locator('#step-title').inner_text())
+    ok('command generator removed',page.locator('#use, #command-form, #build-command').count()==0)
+    ok('no obsolete builder links',page.locator('a[href="#use"]').count()==0)
     page.locator('#tab-boundary').click();page.locator('#after-button').click()
     for width,height in [(1440,1000),(768,1024),(390,844),(320,720)]:
         page.set_viewport_size({'width':width,'height':height})
@@ -92,7 +70,7 @@ with sync_playwright() as p:
             page.screenshot(path=str(output/f'page-{width}.png'),full_page=True)
     page.set_viewport_size({'width':1440,'height':1000})
     page.locator('#cases').screenshot(path=str(output/'case.png'))
-    page.locator('#use').screenshot(path=str(output/'builder.png'))
+    page.locator('#method').screenshot(path=str(output/'method.png'))
     for href in page.locator('a[href^="#"]').evaluate_all('(a)=>a.map(x=>x.getAttribute("href"))'):
         ok(f'anchor {href}',href=='#' or page.locator(href).count()>0)
     for resource in ['data.js','app.js','style.css','workflow.js','workflow.css','assets/alignment-case-lawyer.png','assets/speaker-sets.svg','assets/cleaning-pipeline.svg','sitemap.xml','robots.txt','favicon.svg']:

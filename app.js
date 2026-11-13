@@ -4,10 +4,7 @@
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => [...document.querySelectorAll(s)];
   if (!data) return;
-  const samples = new Map(data.samples.map(r => [r[0], r]));
-  const finalSpeakers = data.speakers.filter(s => s.final > 0);
   let selectedSpeaker = 'F02', scope = 'audio', repaired = false;
-  const escape = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   $('#data-version').textContent = `Metadata snapshot: ${data.commit.slice(0, 7)}`;
 
   function showSpeaker(id) {
@@ -20,10 +17,6 @@
     $('#speaker-issue').textContent = s.issue;
     $('#speaker-repair').textContent = s.repair;
     $('#speaker-rate').textContent = s.audited ? `${s.affected} / ${s.audited} · ${(100*s.affected/s.audited).toFixed(2)}%` : '— No comparable audited denominator';
-    const link = $('#speaker-use');
-    link.textContent = s.final ? 'Build this speaker’s clips ↗' : 'Not included in the reconstruction';
-    link.setAttribute('aria-disabled', String(!s.final));
-    link.tabIndex = s.final ? 0 : -1;
     $$('.speaker-chip').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.speaker === id)));
   }
   function renderSpeakers() {
@@ -76,15 +69,15 @@
     $('#before-button').setAttribute('aria-pressed', String(!value));
     $('#after-button').setAttribute('aria-pressed', String(value));
     $('#camera-wave').dataset.panel = value ? 'corrected' : 'original';
-    $('#camera-wave').setAttribute('aria-label', `Camera speech from the ${value?'corrected':'original'} frame interval`);
-    $('#camera-label').innerHTML = `<i class="key ${value?'teal':'orange'}"></i>Camera speech — ${value?'corrected':'original'} index`;
+    $('#camera-wave').setAttribute('aria-label', `Video speech track from the ${value?'corrected':'original'} frame interval`);
+    $('#camera-label').innerHTML = `<i class="key ${value?'teal':'orange'}"></i>Video speech track — ${value?'corrected':'original'} index`;
     $('#camera-duration').textContent = value ? '2.269 s' : '5.172 s';
     $('#interval-status').textContent = value ? 'Corrected interval' : 'Original interval';
     $('#interval-status').classList.toggle('repaired',value);
     const c = data.case;
     $('#case-frames').textContent = value ? `[${c.corrected_begin_frame}, ${c.corrected_end_frame_exclusive})` : `[${c.original_begin_frame}, ${c.original_end_frame_exclusive})`;
     $('#case-verdict').textContent = value ? 'The matching utterance is recovered.' : 'The next word, not this word.';
-    $('#case-explanation').textContent = value ? 'The corrected camera interval contains the corresponding speech burst. Only the video location changed; the word recording stayed the same.' : 'The old interval falls at the neighboring “Missouri” recording. Its longer, different speech pattern does not match the reference.';
+    $('#case-explanation').textContent = value ? 'The corrected video speech interval contains the corresponding speech burst. Only the video location changed; the word recording stayed the same.' : 'The old interval falls at the neighboring “Missouri” recording. Its longer, different speech pattern does not match the reference.';
     drawComparison();
   }
   $('#before-button').addEventListener('click',()=>setRepair(false));
@@ -104,50 +97,9 @@
   function showBlock(block) {
     $('#block-label').textContent = `M07 · ${block}`;
     $$('[data-block]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.block===block)));
-    $('#mapping-results').innerHTML = data.m07[block].map((r,i)=>`<div class="mapping-item ${i?'exception':''}"><strong>${r.source.replace('_',' · ')} video</strong><span class="count">${r.count} / 255</span><small>${i?'Exception to the predominant mapping':'Predominant source'} · ${(r.count/255*100).toFixed(1)}%</small><button data-example="${r.example}">Inspect ${r.example} in the command builder ↗</button></div>`).join('');
-    $$('[data-example]').forEach(b=>b.addEventListener('click',()=>{
-      $('[name=build-scope][value=sample]').checked=true; $('#sample-id').value=b.dataset.example;updateCommand(); $('#use').scrollIntoView(); $('#sample-id').focus({preventScroll:true});
-    }));
+    $('#mapping-results').innerHTML = data.m07[block].map((r,i)=>`<div class="mapping-item ${i?'exception':''}"><strong>${r.source.replace('_',' · ')} video</strong><span class="count">${r.count} / 255</span><small>${i?'Exception to the predominant mapping':'Predominant source'} · ${(r.count/255*100).toFixed(1)}%</small><small class="mapping-example">Example: ${r.example}</small></div>`).join('');
   }
   $$('[data-block]').forEach(b=>b.addEventListener('click',()=>showBlock(b.dataset.block)));
   showBlock('B1');
 
-  $('#build-speaker').innerHTML=finalSpeakers.map(s=>`<option value="${s.id}" ${s.id==='F04'?'selected':''}>${s.id} · 765 records</option>`).join('');
-  const shellQuote=s=>"'"+s.replace(/'/g,"'\"'\"'")+"'";
-  function updateOptions() {
-    const query=$('#sample-id').value.trim().toUpperCase();
-    const found=data.samples.filter(r=>r[0].startsWith(query)).slice(0,40);
-    $('#sample-options').innerHTML=found.map(r=>`<option value="${r[0]}">${escape(r[1])}</option>`).join('');
-  }
-  function updateCommand() {
-    const mode=$('[name=build-scope]:checked').value;
-    $('#sample-field').hidden=mode!=='sample';$('#speaker-field').hidden=mode!=='speaker';
-    const uid=$('#sample-id').value.trim().toUpperCase(),sample=samples.get(uid);
-    const raw=$('#raw-root').value.trim(),output=$('#output-root').value.trim();
-    let error='';
-    if (!raw||!output) error='Enter both the original-data folder and a separate output folder.';
-    if (/[\x00-\x1f\x7f]/.test(raw+output)) error='Folder paths must be on one line, without control characters.';
-    if (raw===output) error='The source and output folders must be different.';
-    if (mode==='sample'&&!sample) error='Choose an existing sample ID from the published frame index.';
-    $('#sample-description').textContent=sample?`${sample[1]} · ${sample[2]} · [${sample[3]}, ${sample[4]})`:'No matching sample.';
-    $('#command-error').textContent=error;$('#copy-command').disabled=Boolean(error);$('#copy-status').textContent='';
-    if (error) { $('#build-command').textContent='# Complete the fields to generate a valid command.'; return; }
-    const command=['python -m uaspeech_cut build',`  --raw-root ${shellQuote(raw)}`,`  --output ${shellQuote(output)}`];
-    if (mode==='sample') command.push(`  --id ${uid}`);
-    if (mode==='speaker') command.push(`  --speaker ${$('#build-speaker').value}`);
-    if ($('#workers').value!=='1') command.push(`  --workers ${$('#workers').value}`);
-    $('#build-command').textContent=command.join(' \\\n');
-  }
-  $('#command-form').addEventListener('submit',e=>e.preventDefault());
-  $('#command-form').addEventListener('input',updateCommand);$('#command-form').addEventListener('change',updateCommand);
-  $('#sample-id').addEventListener('input',updateOptions);
-  $('#speaker-use').addEventListener('click',e=>{
-    if (!data.speakers.find(s=>s.id===selectedSpeaker).final) {e.preventDefault();return;}
-    $('[name=build-scope][value=speaker]').checked=true;$('#build-speaker').value=selectedSpeaker;updateCommand();
-  });
-  $('#copy-command').addEventListener('click',async()=>{
-    if ($('#copy-command').disabled) return;
-    try {await navigator.clipboard.writeText($('#build-command').textContent);$('#copy-status').textContent='Copied. Paste into your terminal after installation.';}
-    catch {$('#copy-status').textContent='Clipboard access is unavailable. Select and copy the command above.';}
-  });updateOptions();updateCommand();
 })();
