@@ -76,7 +76,7 @@
     $('#interval-status').classList.toggle('repaired',value);
     const c = data.case;
     $('#case-frames').textContent = value ? `[${c.corrected_begin_frame}, ${c.corrected_end_frame_exclusive})` : `[${c.original_begin_frame}, ${c.original_end_frame_exclusive})`;
-    $('#case-verdict').textContent = value ? 'The matching utterance is recovered.' : 'The next word, not this word.';
+    $('#case-verdict').textContent = value ? 'Corrected interval matches the target word.' : 'Original interval contains a neighboring word.';
     $('#case-explanation').textContent = value ? 'The corrected video speech interval contains the corresponding speech burst. Only the video location changed; the word recording stayed the same.' : 'The old interval falls at the neighboring “Missouri” recording. Its longer, different speech pattern does not match the reference.';
     drawComparison();
   }
